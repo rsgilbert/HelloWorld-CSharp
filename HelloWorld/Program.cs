@@ -7,15 +7,23 @@ namespace HelloWorld
     {
         public static void Main(string[] args)
         {
-            char[] chars = {'c', 'a', 'f', (char) 0xe9, 's'};
-            string text = new string(chars);
-            Console.WriteLine(text);
-            Console.WriteLine(text.Length);
-            Console.WriteLine(new string(text.Reverse().ToArray()));
+            string name = "Jane";
+            double age = 5.1981;
+            // string interpolation 
+            string msg = $"{name} is {age:f1} years old";
+            Console.WriteLine(msg);
 
-            string t2 = "cafés";
-            Console.WriteLine(t2);
-            Console.WriteLine(t2.Length);
+            string msg2 = string.Format("Again, {0} is {1} years old", name, age);
+            Console.WriteLine(msg2);
+
+            double pi = 3.1486;
+            Console.WriteLine(pi.ToString("f2"));
+
+            // verbatim string literals
+            string p = @"C:\windows\assembly
+            
+        z";
+            Console.WriteLine(p);
         }
 
     }
