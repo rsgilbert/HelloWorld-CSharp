@@ -1,24 +1,30 @@
-﻿
+﻿using System.Diagnostics;
 
 
 namespace HelloWorld
 {
     public class Program
     {
+        [Conditional("RELEASE")]
+        static void ShowDebugInfo()
+        {
+            Console.WriteLine("I am allowed to show debug info2");
+        }
+     
         public static void Main(string[] args)
         {
-            Console.WriteLine("hello, world");
+#pragma warningm disable
+            var i = 10;
+
+            Console.WriteLine("Done 29");
+            ShowDebugInfo();
+#if false
+#error We do not support this version
+#endif
         }
     }
 }
 
 
-namespace HelloWorld.Triage
-{
-    public class Treat { }
-}
-
-// See https://aka.ms/new-console-template for more information
-// Console.WriteLine("Hello, World!");
 
 
