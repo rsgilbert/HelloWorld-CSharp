@@ -7,27 +7,41 @@ namespace HelloWorld
     {
         public static void Main(string[] args)
         {
-            string name = "Jane";
-            double age = 5.1981;
-            // string interpolation 
-            string msg = $"{name} is {age:f1} years old";
-            Console.WriteLine(msg);
+            (int X, int Y) point = (1, 4);
+            Console.WriteLine($"X is {point.X}, Y is {point.Y}");
 
-            string msg2 = string.Format("Again, {0} is {1} years old", name, age);
-            Console.WriteLine(msg2);
+            var sides = (right: 10, left: 5, top: 15, bottom: 4);
+            Console.WriteLine(sides);
+            Console.WriteLine($"Perimeter = {sides.right + sides.top + sides.bottom + sides.left}");
 
-            double pi = 3.1486;
-            Console.WriteLine(pi.ToString("f2"));
+            string firstname = "John";
+            string lastname = "Walker";
 
-            // verbatim string literals
-            string p = @"C:\windows\assembly
-            
-        z";
-            Console.WriteLine(p);
+            var names = (firstname, lastname);
+            Console.WriteLine(names);
+
+            (int, int, string) info = (2, 123, "James");
+            Console.WriteLine($"{info.Item1}, {info.Item2}, {info.Item3}");
+
+            (int p2, int q2) point2 = point;
+            Console.WriteLine(point2.q2);
+
+
+            // deconstruction
+            (double l, double w, double h) cube = (1, 2, 3);
+
+            (double l2, double w2, double h2) = cube;
+
+            Console.WriteLine(w2);
+            double n, m, o;
+            (n, m, o) = cube;
+            Console.WriteLine(o);
+
+
         }
 
     }
-    
+
 }
 
 
