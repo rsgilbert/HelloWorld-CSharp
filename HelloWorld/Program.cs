@@ -7,17 +7,25 @@ namespace HelloWorld
     {
         public static void Main(string[] args)
         {
-            int x = 3;
-            int y = 5;
-            int mx = (x > y) ? x : y;
-            Console.WriteLine(mx);
+            string workStatus = "ManagerInRoom";
 
-            string msg = null;
-            string finalMsg = msg ?? "No message";
-            Console.WriteLine(finalMsg);
-            Console.WriteLine(msg?.Length ?? -1);
-
-
+            switch(workStatus)
+            {
+                case "ManagerInRoom":
+                    Console.WriteLine("Work diligently");
+                    goto case "DeadlineOvershot";
+                case "HaveNonUrgentDeadline":
+                case "HaveImminentDeadline":
+                    Console.WriteLine("Check twitter");
+                    Console.WriteLine("Check email");
+                    break;
+                case "DeadlineOvershot":
+                    Console.WriteLine("Work furiously");
+                    break;
+                default:
+                    Console.WriteLine("Chat");
+                    break;
+            }
         }
 
     }
