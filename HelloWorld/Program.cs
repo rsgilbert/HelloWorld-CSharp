@@ -7,24 +7,16 @@ namespace HelloWorld
     {
         public static void Main(string[] args)
         {
-            string workStatus = "ManagerInRoom";
+            string[] names = { "John", "Peter", "Jack", "Simon", "Liz" , "Simon"};
 
-            switch(workStatus)
+            ShowMessages(names);
+        }
+
+        public static void ShowMessages(IEnumerable<string> messages)
+        {
+            foreach (string message in messages)
             {
-                case "ManagerInRoom":
-                    Console.WriteLine("Work diligently");
-                    goto case "DeadlineOvershot";
-                case "HaveNonUrgentDeadline":
-                case "HaveImminentDeadline":
-                    Console.WriteLine("Check twitter");
-                    Console.WriteLine("Check email");
-                    break;
-                case "DeadlineOvershot":
-                    Console.WriteLine("Work furiously");
-                    break;
-                default:
-                    Console.WriteLine("Chat");
-                    break;
+                Console.WriteLine(message);
             }
         }
 
