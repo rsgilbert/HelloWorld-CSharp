@@ -9,96 +9,48 @@ class Program
 {
     static void Main(string[] args)
     {
-        var p1 = new Point(40, 2);
-        Point p2 = p1;
-        var p3 = new Point(40, 2);
+        // Item i1 = new Item(500);
+        // i1.Print();
 
-        Console.WriteLine($"{p1.X}, {p1.Y}");
-        Console.WriteLine($"{p2.X}, {p2.Y}");
-        Console.WriteLine($"{p3.X}, {p3.Y}");
+        // Item i2 = new Item(10, "Jack");
+        // i2.Print();
 
-        WriteLine(p1 == p2);
-        WriteLine(p2 == p3);
-        WriteLine(object.Equals(p3, p2));
-        
-        var p5 = new Point2(8, 5);
-        var p6 = new Point2(8, 5);
-        
-        
-        Console.WriteLine($"{p5.X}, {p5.Y}");
-        Console.WriteLine($"{p6.X}, {p6.Y}");
-        WriteLine(p5 == p6);
-        // WriteLine(object.ReferenceEquals(p1, p2));
-
-        const double kilometersPerMile = 1.609;
+        Console.WriteLine(Item.a);
     }
 
 }
 
-public readonly struct Point2 
+public class Item
 {
-    public Point2(double x, double y)
+    static Item()
     {
-        X = x;
-        Y = y;
+        Console.WriteLine("Static constructor here");
+        Console.WriteLine($"a {a} b {b} c {c}");
     }
-    public double X { get; }
-    public double Y { get; }
+    public static int a = b + 1;
+    private static int b = 100;
+    private static int c = b + 1;
+    public Item()
+    {
+        _price = 0;
+        _name = "Unknown item";
+    }
+    public Item(decimal price)
+        : this()
+    {
+        _price = price;
+    }
+    public Item(decimal price, string name) : this(price)
+    {
+        _name = name;
+    }
 
-    public double DistanceFromOrigin()
+     
+    private readonly decimal _price;
+    private readonly string _name;
+
+    public void Print() 
     {
-        return Math.Sqrt(X * X + Y * Y);
-    }
-    public static bool operator ==(Point2 p1, Point2 p2)
-    {
-        return p1.X == p2.X && p1.Y == p2.Y;
-    }
-    public static bool operator !=(Point2 p1, Point2 p2)
-    {
-        return !(p1 == p2);
-    }
-     public override bool Equals(object? o)
-    {
-        return o is Point2 p2 && this == p2;
-    }
-    public override int GetHashCode()
-    {
-        return (X, Y).GetHashCode();
+        WriteLine($"Price {_price}, Name {_name}");
     }
 }
-
-
-public struct Point 
-{
-    private double _x;
-    private double _y;
-
-    public Point(double x, double y)
-    {
-        _x = x;
-        _y = y;
-    }
-    public double X => _x;
-    public double Y => _y;
-
-    public static bool operator ==(Point p1, Point p2)
-    {
-        return p1.X == p2.X && p1.Y == p2.Y;
-    }
-    public static bool operator !=(Point p1, Point p2)
-    {
-        return !(p1 == p2);
-    }
-
-    public override bool Equals(object? o)
-    {
-        return o is Point p2 && this == p2;
-    }
-    public override int GetHashCode()
-    {
-        return (X, Y).GetHashCode();
-    }
-}
-
-
-
