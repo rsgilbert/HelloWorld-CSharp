@@ -4,50 +4,32 @@ class Program
 {
     static void Main(string[] args)
     {
-        Counter c1 = new Counter();
-        c1.GetNextValue();
-        Counter c2 = c1;
-        Counter c3 = new Counter();
-        c3.GetNextValue();
+        string? texty2 = null;
+        string t3 = texty2!; // null forgiving operator
 
-        WriteLine(c1.Count);
-        WriteLine(c2.Count);
-        WriteLine(c3.Count);
+    
+        if(texty2 != null)
+        {
+            WriteLine($"L is {texty2.Length}");
+        }
+        WriteLine($"Length is {texty2?.Length ?? -1}");
+        // WriteLine($"L2 is {texty2!.Length}");
 
-        WriteLine(c1 == c2);
-        WriteLine(c1 == c3); // false 
-        WriteLine(c2 == c3);
+        var nullableStrings = new string?[5];
+        var nonNullableStrings = new string[5];
 
-        
-        WriteLine(object.ReferenceEquals(c1, c2)); // true
-        WriteLine(object.ReferenceEquals(c1, c3)); // false 
-        WriteLine(object.ReferenceEquals(c2, c3));
+        WriteLine($"nullable [1] {nullableStrings[1]}");
+        WriteLine($"non-nullable [1] {nonNullableStrings[1]}"); 
 
-        WriteLine("comparing ints");
-        int i1 = new int();
-        i1++;
-        int i2 = i1;
-        Int16 i3 = new int();
-        i3++;
+    }
 
-        WriteLine(i1);
-        WriteLine(i2);
-        WriteLine(i3);
-
-        WriteLine(i1 == i2);
-        WriteLine(i1 == i3);
-        WriteLine(i2 == i3);
-
-        
-        WriteLine(Object.ReferenceEquals(i1, i2));
-        WriteLine(object.ReferenceEquals(i1, i3)); 
-        WriteLine(object.ReferenceEquals(i2, i3));
-        WriteLine(object.ReferenceEquals(i3, i3));
-
-       
-
-        
-
+    public static string Get(IDictionary<int, string> d)
+    {
+        if(d.TryGetValue(42, out string? s))
+        {
+            return s;
+        }
+        return "Not found";
     }
 }
 
