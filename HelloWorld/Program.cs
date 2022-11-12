@@ -9,48 +9,44 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Item i1 = new Item(500);
-        // i1.Print();
-
-        // Item i2 = new Item(10, "Jack");
-        // i2.Print();
-
-        Console.WriteLine(Item.a);
+        Size s1 = new Size(5, 3);
+        Size s2 = new Size(2, 0);
+        WriteLine(Size.DiagonalLength(s1));
+        WriteLine(Size.DescribeSize(s2));
     }
+
+
 
 }
 
-public class Item
+public readonly struct Size
 {
-    static Item()
+    public Size(double w, double h)
     {
-        Console.WriteLine("Static constructor here");
-        Console.WriteLine($"a {a} b {b} c {c}");
-    }
-    public static int a = b + 1;
-    private static int b = 100;
-    private static int c = b + 1;
-    public Item()
-    {
-        _price = 0;
-        _name = "Unknown item";
-    }
-    public Item(decimal price)
-        : this()
-    {
-        _price = price;
-    }
-    public Item(decimal price, string name) : this(price)
-    {
-        _name = name;
+        W = w;
+        H = h;
     }
 
-     
-    private readonly decimal _price;
-    private readonly string _name;
-
-    public void Print() 
+    public void Deconstruct(out double w, out double h)
     {
-        WriteLine($"Price {_price}, Name {_name}");
+        w = W;
+        h = H;
     }
+
+    public static double DiagonalLength(Size s)
+    {
+        (double width, double height) = s;
+        return Math.Sqrt(width * width + height * height);
+    }
+
+    public static string DescribeSize(Size s) => s switch 
+    {
+        (0, 0) => "Empty",
+        (0, _) => "Very narrow",
+        (_, 0) => "Very short",
+        _ => "Normal"
+    };
+
+    public double W { get; }
+    public double H { get; }
 }
