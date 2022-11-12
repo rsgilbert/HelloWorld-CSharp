@@ -29,6 +29,8 @@ class Program
         Console.WriteLine($"{p6.X}, {p6.Y}");
         WriteLine(p5 == p6);
         // WriteLine(object.ReferenceEquals(p1, p2));
+
+        const double kilometersPerMile = 1.609;
     }
 
 }
