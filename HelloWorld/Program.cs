@@ -6,39 +6,33 @@ public class Program
 {
     static void Main(string[] args)
     {
-        DoStuff ds = new DoStuff();
-        ds.Name = "James";
-        WriteLine(ds.Name);
+        INamed h2 = new HumanName();
+        WriteLine(h2.Name);
 
-        IDoStuff ds2 = new DoStuff();
-        WriteLine(ds2.Id);
+        INamed inamed0 = new HumanName();
+        WriteLine(inamed0.FindOutcome());
+        WriteLine(INamed.TheMagicWord);
+        
 
-        WriteLine(((IDoStuff) ds).Id );
-
-    }
-
-
-  
-}
-
-public class DoStuff : IDoStuff
-{
-    private string _name = "";
-    public string this[int i] { get {return $"Index {i}";} set {} }
-    public string Name { get {return _name; } set { _name = value; }}
-    int IDoStuff.Id => 1;
-    public int Hey(string other) 
-    {
-        Console.WriteLine($"Hey {other}");
-        return 0;
     }
 }
 
-public interface IDoStuff 
+public class HumanName : INamed 
 {
-    string this[int i] { get; set; }
-    string Name { get; set; }
+    public int Id => 4;
+    // public string Name => "James";
+}
+
+public interface INamed 
+{
     int Id { get; }
-    int Hey(string other);
-    // event EventHandler Click;
+    public const string TheMagicWord = "Avada Kedavra";
+
+    public enum Outcome { Yes, No };
+    string Name => $"{this.GetType()}: {this.Id}";
+
+     Outcome FindOutcome()
+    {
+        return Outcome.Yes;
+    }
 }
