@@ -6,45 +6,50 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        House h1 = Deferred<House>.Instance;
-        WriteLine($"height is {h1.Height}");
-        House h2 = Deferred<House>.Instance;
-        WriteLine($"height for h2 is {h2.Height}");
+        var housePrinter = new HousePrinter<FlatHouse>();
+        var flat1 = new FlatHouse();
+        housePrinter.Print(flat1);
+
+        var simpleHousePrinter = new HousePrinter<IHouse>();
+        simpleHousePrinter.Print(new SimpleHouse("My simple house"));
 
     }
 
 }
 
-public static class Deferred<T>
-    where T : new()
+public class HousePrinter<T>
+    where T : IHouse
 {
-    private static T? _instance;
-
-
-    public static T Instance 
+    public void Print(T t)
     {
-        get 
-        {
-            if(_instance == null)
-            {
-                _instance = new T();
-            }
-            return _instance;
-        }
+        Console.WriteLine(t.description);
     }
 }
 
-public class House 
+
+
+public interface IHouse
 {
+    string description { get; set; }
+}
 
-    public House()
-    {
-        WriteLine("Constructing a new house");
-    }
-    public int Height => 10;
+public class FlatHouse : IHouse
+{
+    public string description { get; set; } = "This is a flat house";
+
 }
 
 
+
+public class SimpleHouse : IHouse 
+{
+    private string _description;
+    public SimpleHouse(string description)
+    {
+        _description = description;
+    }
+    public string description { get { return _description; }set{}} 
+}
 
 
 
