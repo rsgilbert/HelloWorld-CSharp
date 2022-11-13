@@ -2,30 +2,17 @@
 using static System.Math;
 using System.Windows;
 
-
 public class Program
 {
     static void Main(string[] args)
     {
-        House house = new House();
-        house.Height = 100;
-        WriteLine($"House height is {house.Height}");
-        // house.Width = 5; 
-        WriteLine($"House width is {house.Width}");
-
-        House house2 = new House(5);
-        house2.Height = 3;
-        WriteLine($"Base area is {house2.BaseArea}");
-
-        Mansion m = new Mansion();
-        m.House = new House(3);
-        m.House.Height = 4;
-        WriteLine(m.House.BaseArea);
-
-        // look at indexers 
-        var hp = new HarryPotter();
-        WriteLine($"{hp[1]}");
-        WriteLine($"{hp[3]}");
+       var d = new Dictionary<string, int> 
+       {
+        ["one"] = 1,
+        ["t"] = 5
+       };
+       WriteLine(d["t"]);
+       
     }
 
 }
