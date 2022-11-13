@@ -2,42 +2,50 @@
 using static System.Math;
 using System.Windows;
 
-public  partial class Program
+public partial class Program
 {
-     static void Main(string[] args)
+    static void Main(string[] args)
     {
-        
-        NamedContainer<int> container = new NamedContainer<int>(5, "jokes");
-        WriteLine(container.Item);
-        WriteLine(container.Name);
-
-        NamedContainer<string> container2 = new NamedContainer<string>("Programming", "book");
-        WriteLine(container2.Item);
+        House h1 = Deferred<House>.Instance;
+        WriteLine($"height is {h1.Height}");
+        House h2 = Deferred<House>.Instance;
+        WriteLine($"height for h2 is {h2.Height}");
 
     }
-    
+
 }
 
-public class NamedContainer<T> 
+public static class Deferred<T>
+    where T : new()
 {
-    public NamedContainer(T item, string name)
-    {
-        Item = item;
-        Name = name;
-    }
+    private static T? _instance;
 
-    public T Item { get; }
-    public string Name {get; }
+
+    public static T Instance 
+    {
+        get 
+        {
+            if(_instance == null)
+            {
+                _instance = new T();
+            }
+            return _instance;
+        }
+    }
 }
 
-public class NamedContainer<T,U> 
+public class House 
 {
-    public NamedContainer(T item, string name)
-    {
-        Item = item;
-        Name = name;
-    }
 
-    public T Item { get; }
-    public string Name {get; }
+    public House()
+    {
+        WriteLine("Constructing a new house");
+    }
+    public int Height => 10;
 }
+
+
+
+
+
+
