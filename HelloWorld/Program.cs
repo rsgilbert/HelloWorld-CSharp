@@ -6,24 +6,38 @@ public  partial class Program
 {
      static void Main(string[] args)
     {
-        Bedroom b = new Bedroom();
-        WriteLine(b.Chairs);
-        WriteLine(b.Windows);
-        WriteLine(Cry());
-        WriteLine(b.Doors());
+        
+        NamedContainer<int> container = new NamedContainer<int>(5, "jokes");
+        WriteLine(container.Item);
+        WriteLine(container.Name);
+
+        NamedContainer<string> container2 = new NamedContainer<string>("Programming", "book");
+        WriteLine(container2.Item);
 
     }
-    public static partial string Cry();
-
-    public static partial string Cry()
-    {
-        return "I am crying";
-    }
+    
 }
 
-public partial class Bedroom
+public class NamedContainer<T> 
 {
-    public int Windows => 3;
+    public NamedContainer(T item, string name)
+    {
+        Item = item;
+        Name = name;
+    }
 
-    public partial int Doors();
+    public T Item { get; }
+    public string Name {get; }
+}
+
+public class NamedContainer<T,U> 
+{
+    public NamedContainer(T item, string name)
+    {
+        Item = item;
+        Name = name;
+    }
+
+    public T Item { get; }
+    public string Name {get; }
 }
