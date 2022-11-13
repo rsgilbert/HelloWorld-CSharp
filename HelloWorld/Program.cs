@@ -6,33 +6,39 @@ public class Program
 {
     static void Main(string[] args)
     {
-        INamed h2 = new HumanName();
-        WriteLine(h2.Name);
+        var temp = PorridgeTemperature.TooHot;
 
-        INamed inamed0 = new HumanName();
-        WriteLine(inamed0.FindOutcome());
-        WriteLine(INamed.TheMagicWord);
-        
+        switch (temp)
+        {
+            case PorridgeTemperature.TooHot:
+                WriteLine("too hot");
+                break;
+            case PorridgeTemperature.TooCold:
+                WriteLine("very cold");
+                break;
+        }
+        WriteLine(((int)temp));
+        WriteLine($"Just right: {(int)PorridgeTemperature.JustRight}");
+
+        WriteLine($"too cold: {(int)PorridgeTemperature.TooCold}");
+
+        PorridgeTemperature hotOrCold = PorridgeTemperature.TooCold | PorridgeTemperature.TooHot;
+        WriteLine(hotOrCold); // prints: TooHot, TooCold
+
+        var v = hotOrCold & PorridgeTemperature.TooCold;
+        WriteLine(v);
+
 
     }
-}
 
-public class HumanName : INamed 
-{
-    public int Id => 4;
-    // public string Name => "James";
-}
 
-public interface INamed 
-{
-    int Id { get; }
-    public const string TheMagicWord = "Avada Kedavra";
-
-    public enum Outcome { Yes, No };
-    string Name => $"{this.GetType()}: {this.Id}";
-
-     Outcome FindOutcome()
+    [Flags]
+    public enum PorridgeTemperature: long
     {
-        return Outcome.Yes;
-    }
+        // order them as powers of 2 since they are bit flags
+        TooHot = 1,
+        TooCold = 2,
+        JustRight = 4
+
+    };
 }
