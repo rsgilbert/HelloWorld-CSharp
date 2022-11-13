@@ -1,5 +1,6 @@
 ﻿using static System.Console;
 using static System.Math;
+using MyApp;
 
 
 
@@ -9,25 +10,27 @@ class Program
 {
     static void Main(string[] args)
     {
-        WriteLine(string.Format("{0}, {1}, {2}", 4, 5, 3));
-        WriteLine($"Sum is {sum(10, 20, 30, 40)}");
+        string nm = "Jackie Chan";
+        nm.PrintToConsole();
+        "Magnus".PrintLength();
     }
 
-    static double sum(params double[] values)
+
+
+}
+
+namespace MyApp
+{
+    public static class MyStringExt 
     {
-        double c = 8;
-        InitializeResult(out double result);
-        foreach(double v in values)
+        public static void PrintToConsole(this string s) 
         {
-            result = Incremented(result, v);
+            Console.WriteLine(s);
         }
-        return result;
-
-        static void InitializeResult(out double result)
+        public static void PrintLength(this string s)
         {
-            result = 0;
+            Console.WriteLine($"The length of {s} is {s.Length}");
         }
-        double Incremented(double num, double byAmount) => num + byAmount;
+        
     }
-
 }
