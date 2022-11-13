@@ -9,18 +9,25 @@ class Program
 {
     static void Main(string[] args)
     {
-        Blame(problem: "poverty");
-
+        WriteLine(string.Format("{0}, {1}, {2}", 4, 5, 3));
+        WriteLine($"Sum is {sum(10, 20, 30, 40)}");
     }
 
-    public static void Blame(string perpertrator = " kids ", string problem = " the dirty environment")
+    static double sum(params double[] values)
     {
-        Console.Write($"We blame {perpertrator} for {problem}.");
+        double c = 8;
+        InitializeResult(out double result);
+        foreach(double v in values)
+        {
+            result = Incremented(result, v);
+        }
+        return result;
 
-        // using var r = new StreamReader(stream, Encoding.UTF8, true, 8192, false);
-        // using var r2 = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize:8192, leaveOpen: false);
-
-        // using var w = new StreamWriter(filepath, append:true, Encoding.UTF8);
-
+        static void InitializeResult(out double result)
+        {
+            result = 0;
+        }
+        double Incremented(double num, double byAmount) => num + byAmount;
     }
+
 }
