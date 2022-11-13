@@ -6,68 +6,62 @@ public class Program
 {
     static void Main(string[] args)
     {
-       var d = new Dictionary<string, int> 
-       {
-        ["one"] = 1,
-        ["t"] = 5
-       };
-       WriteLine(d["t"]);
-       
+        var c1 = new Counter { Count = 3 };
+        var c2 = new Counter { Count = 7 };
+        var cSum = c1 + c2;
+        WriteLine($"Count sum {cSum.Count}");
+        var c3 = 5 + c1;
+        WriteLine($"sum {c3.Count}");
+        c2 += 1;
+        WriteLine($"c2 {c2.Count}");
+        c2++;
+        WriteLine($"c2 {c2.Count}");
+        int i = (int)c2;
+        WriteLine(i);
+        double d = c3;
+        WriteLine(d);
+
+        // c3.Count = -5;
+        if ((bool)c3)
+        {
+            Console.WriteLine($"c3 {(int)c3} is true");
+        }
+
     }
 
 }
 
-// indexer
-public class HarryPotter
+class Counter
 {
-    public string this[int index]
+    public int Count { get; set; } = 0;
+    public static Counter operator +(Counter x, Counter y)
     {
-        get
-        {
-            switch (index)
-            {
-                case 1: return "Sorcerer's Stone";
-                case 2: return "Chamber of Secrets";
-                case 3: return "Prizoner of Azkaban";
-                default: throw new Exception("Unknown");
-            }
-        }
+        return new Counter { Count = x.Count + y.Count };
     }
-}
-
-public struct Mansion
-{
-    public House House { get; set; }
-}
-
-public class House
-{
-    private double _height;
-
-    public House() { }
-    public House(double width)
+    public static Counter operator +(int i, Counter c)
     {
-        Width = width;
+        return new Counter { Count = i + c.Count };
+    }
+    public static Counter operator +(Counter c, int i)
+    {
+        return i + c;
+    }
+    public static Counter operator ++(Counter c)
+    {
+        return c + 1;
     }
 
-    public double Height
+    public static explicit operator int(Counter c)
     {
-        get
-        {
-            WriteLine($"_height is {_height}");
-            return _height * 1000;
-        }
-        set
-        {
-            WriteLine($"value is {value}");
-            _height = value / 1000;
-        }
+        return c.Count;
+    }
+    public static implicit operator double(Counter c)
+    {
+        return c.Count;
     }
 
-    public double Width { get; private set; } = -1;
-
-    public double BaseArea => Width * Height;
-
-
-
+    public static explicit operator bool(Counter c)
+    {
+        return c.Count > 0;
+    }
 }
