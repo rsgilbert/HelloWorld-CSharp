@@ -7,16 +7,38 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        RequireEnum<Size> r = new RequireEnum<Size>();
+       PrintDefault<string> pd = new PrintDefault<string>();
+       PrintDefault<int> pi = new PrintDefault<int>();
+       PrintDefault<long> pl = new PrintDefault<long>();
+       PrintDefault<bool> pb = new PrintDefault<bool>();
+
+       ShowDef<bool>();
+
+       Print(default);
 
     }
 
-    private enum Size { small, large }
+    static T? ShowDef<T>() 
+    {
+        Console.WriteLine($"Default for is {default(T)}");
+        return default;
+    }
+    static void Print(bool i)
+    {
+        Console.WriteLine($"i is {i}");
+    }
+
+
+   
 
 }
 
-public class RequireEnum<T>  where T : Enum 
+public class PrintDefault<T> 
 {
-
+    public PrintDefault()
+    {
+        var d = default(T);
+        Console.WriteLine(d);
+    }
 }
 
