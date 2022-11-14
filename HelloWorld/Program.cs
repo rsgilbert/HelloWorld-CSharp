@@ -7,14 +7,23 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        Bar<IAge> b = new Bar<IAge>();
+        // below will be allowed if not for value type constraint
+        // Bar<int?> b = new Bar<int?>(null);
+
+        // below is allowed 
+        Bar<int> b = new Bar<int>(4);
+
     }
 
 }
 
 
-public class Bar<T> where T : class
+public class Bar<T> where T : struct
 {
+    public Bar(T t)
+    {
+        t = default(T);
+    }
 
 }
 
