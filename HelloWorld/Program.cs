@@ -1,7 +1,7 @@
 ﻿using static System.Console;
 using static System.Math;
 using System.Windows;
-// using Microsoft.VisualBasic.T
+
 
 public partial class Program
 {
@@ -19,11 +19,4 @@ public partial class Program
     public static (int X, int Y) Pos() => (5, 3);
 
 
-}
-
-
-public class TestC<T>
-{
-    public TestC(T t)
-    { }
 }
