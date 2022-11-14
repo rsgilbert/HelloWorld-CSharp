@@ -7,38 +7,27 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-       PrintDefault<string> pd = new PrintDefault<string>();
-       PrintDefault<int> pi = new PrintDefault<int>();
-       PrintDefault<long> pl = new PrintDefault<long>();
-       PrintDefault<bool> pb = new PrintDefault<bool>();
+        string[] names = { "Peter", "Isaac", "Rodney" };
+        WriteLine($"Last name is {GetLast(names)}");
 
-       ShowDef<bool>();
+        int[] ages = { 5, 3, 2 };
+        WriteLine($"Last age is {GetLast(ages)}");
 
-       Print(default);
+
 
     }
 
-    static T? ShowDef<T>() 
-    {
-        Console.WriteLine($"Default for is {default(T)}");
-        return default;
-    }
-    static void Print(bool i)
-    {
-        Console.WriteLine($"i is {i}");
-    }
+    public static T GetLast<T>(T[] items) => items[items.Length - 1];
+
+  
 
 
-   
 
 }
 
-public class PrintDefault<T> 
+
+public class TestC<T>
 {
-    public PrintDefault()
-    {
-        var d = default(T);
-        Console.WriteLine(d);
-    }
+    public TestC(T t)
+    { }
 }
-
