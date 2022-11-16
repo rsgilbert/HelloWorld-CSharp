@@ -2,27 +2,70 @@
 using static System.Math;
 using System.Windows;
 using System.Numerics;
+using System.Diagnostics;
 
 
 public partial class Program
 {
     static void Main(string[] args)
     {
-        var weekdays = new[] { "Monday", "Thursday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        WriteLine(weekdays[0]);
-        WriteLine(weekdays);
+        var sw = new Stopwatch();
 
-        var i = Array.LastIndexOf(weekdays, "Thursday");
-        WriteLine($"i is {i}, element is {weekdays[i]}");
+        int[] big = new int[10_000_000];
+        Console.WriteLine("Initializing");
+        sw.Start();
+        var r = new Random(0);
+        for (int i = 0; i < big.Length; i++)
+        {
+            big[i] = r.Next(big.Length);
+        }
+        sw.Stop();
+        Console.WriteLine(sw.Elapsed.ToString("s\\.ff") + " seconds");
+        Console.WriteLine();
 
-        var i2 = Array.FindIndex(weekdays, d => d == "Tuesday");
-        WriteLine($"i2 is {i2}, element is {weekdays[i2]}");
+        Console.WriteLine("Searching");
+        double totalTime = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            int searchFor = r.Next(big.Length);
+            sw.Reset();
+            sw.Start();
+            int idx = Array.IndexOf(big, searchFor);
+            sw.Stop();
+            totalTime += sw.Elapsed.TotalSeconds;
+            // WriteLine($"Index of {searchFor} is {idx}, time spent is {sw.Elapsed:s\\.ffff} seconds");
 
-        var sixLettered = Array.FindAll(weekdays, d => d.Length == 6);
-        WriteLine($"Count is {sixLettered.Length}");
+        }
+        Console.WriteLine($"*** Total time spent searching is {totalTime} seconds");
+
+        Console.WriteLine("Sorting");
+        sw.Reset();
+        sw.Start();
+        Array.Sort(big);
+        sw.Stop();
+        Console.WriteLine($"Sorting took {sw.Elapsed:s\\.ff} seconds");
+        Console.WriteLine();
+
+        Console.WriteLine("Searching (binary)");
+        totalTime = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            int searchFor = r.Next(big.Length);
+            sw.Reset();
+            sw.Start();
+            int idx = Array.BinarySearch(big, searchFor);
+            sw.Stop();
+            totalTime += sw.Elapsed.TotalSeconds;
+            // WriteLine($"Index of {searchFor} is {idx}, time spent is {sw.Elapsed:s\\.ffffff} seconds");
+        }
+ Console.WriteLine($"*** Total time spent searching is {totalTime} seconds");
+
     }
 
- 
+
+
+
+
 
 }
 
