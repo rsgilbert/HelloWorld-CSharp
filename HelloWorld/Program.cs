@@ -9,25 +9,28 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        var a1 = new[] {1, 2,3};
-        var a2 = new int[10];
+        var nums = new List<int>();
+        nums.Add(100);
+        nums.Add(88);
+        nums.Add(17);
+        WriteLine(nums.Count);
+        nums[1]++;
+        WriteLine(nums[1]);
 
-        Array.Copy(a1, a2, 2);
+        nums.RemoveAt(1);
+        WriteLine(nums.Count);
+        WriteLine(nums[1]);
 
-        WriteLine(a2[1]);
+        var ages = new List<int>{10, 20, 30};
+        WriteLine(ages[2]);
 
-        Array.Copy(a1, 0, a1, 2, 1);
 
-        WriteLine(a1[2]);
+        var ar = new int[] {8, 7, 3, 1, 5};
+        var ns =new List<int>(ar);
+        WriteLine(ar[2]);
 
-        Array.Clear(a1);
-        
 
-        WriteLine(a1[2]);
 
-        WriteLine(a1.Length);
-        Array.Resize(ref a1, 15);
-        WriteLine(a1.Length);
 
     }
 
