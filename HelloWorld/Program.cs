@@ -9,18 +9,26 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        // rectangular arrays
-        int [,] grid = new int [3, 5]
-        {
-            {1,2,3,4,5},
-            {6,7,8,9,10},
-            {11, 12, 13,14,15}
-        };
-        int i = grid[1,3];
-        WriteLine($"I expect {9}, I've got {i}");
-        WriteLine(grid.Length); // total length 
-        WriteLine(grid.GetLength(0));
-        WriteLine(grid.GetLength(1));
+        var a1 = new[] {1, 2,3};
+        var a2 = new int[10];
+
+        Array.Copy(a1, a2, 2);
+
+        WriteLine(a2[1]);
+
+        Array.Copy(a1, 0, a1, 2, 1);
+
+        WriteLine(a1[2]);
+
+        Array.Clear(a1);
+        
+
+        WriteLine(a1[2]);
+
+        WriteLine(a1.Length);
+        Array.Resize(ref a1, 15);
+        WriteLine(a1.Length);
+
     }
 
 
