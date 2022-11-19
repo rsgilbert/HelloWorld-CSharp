@@ -23,6 +23,8 @@ public class Program
         list.RemoveFirst();
         list.RemoveFirst();
         WriteLine(list.Count);
+
+        
     }
 
    
