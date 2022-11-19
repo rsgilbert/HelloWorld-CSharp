@@ -9,25 +9,52 @@ public class Program
 {
     static void Main(string[] args)
     {
-        LinkedList<string> list = new LinkedList<string>();
-        list.AddFirst(new LinkedListNode<string>("Purple"));
-        list.AddFirst(new LinkedListNode<string>("Green"));
-        list.AddFirst(new LinkedListNode<string>("Yellow"));
-
-        WriteLine(list.Count);
-        WriteLine(list.First?.Value); // Yellow 
-        WriteLine(list.Last?.Value);
-
-        list.RemoveFirst();
-        WriteLine(list.First?.Value);
-        list.RemoveFirst();
-        list.RemoveFirst();
-        WriteLine(list.Count);
-
         
+        MyClass m = new MoreAdvancedClass();
+        m.Hello();
+        ((MoreAdvancedClass) m).fire();
+        var d = m as MyDisposableAdvancedClass;
+        WriteLine(d == null);
+        var e = m as MoreAdvancedClass;
+        WriteLine(e == null);
+        e?.fire();
+
+        if(m is MoreAdvancedClass moreAdv)
+        {
+            moreAdv.fire();
+        }
     }
 
    
 
 
+}
+
+public class Jaguar {}
+
+public class MoreAdvancedClass : MyAdvancedClass 
+{
+    public  void fire()
+    {
+        WriteLine("Firing");
+    }
+}
+
+public class MyAdvancedClass : MyClass
+{
+
+}
+
+public class MyDisposableAdvancedClass : MyClass, IDisposable
+{
+    public void Dispose() {}
+}
+
+
+public class MyClass
+{
+    public void Hello()
+    {
+        WriteLine("Hello");
+    }
 }
