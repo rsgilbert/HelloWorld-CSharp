@@ -9,20 +9,13 @@ public class Program
 {
     static void Main(string[] args)
     {
+        IBoth2 b = new IBoth2Impl();
+        b.Base1Log();
+        b.Base2Log();
+        b.BothLog();
+        b.Both2Log();
         
-        MyClass m = new MoreAdvancedClass();
-        m.Hello();
-        ((MoreAdvancedClass) m).fire();
-        var d = m as MyDisposableAdvancedClass;
-        WriteLine(d == null);
-        var e = m as MoreAdvancedClass;
-        WriteLine(e == null);
-        e?.fire();
-
-        if(m is MoreAdvancedClass moreAdv)
-        {
-            moreAdv.fire();
-        }
+ 
     }
 
    
@@ -30,31 +23,48 @@ public class Program
 
 }
 
-public class Jaguar {}
 
-public class MoreAdvancedClass : MyAdvancedClass 
+interface IBase1 
 {
-    public  void fire()
+    void Base1Log()
+
+  ;
+}
+
+interface IBase2 
+{
+    void Base2Log()
     {
-        WriteLine("Firing");
+        WriteLine("I am base 2");
+    }
+
+}
+
+interface IBoth : IBase1, IBase2
+{
+    void BothLog()
+    {
+        WriteLine("I am both");
+    }
+
+}
+
+interface IBoth2 : IBoth 
+{
+    void Both2Log()
+    {
+        WriteLine("I am both 2");
     }
 }
 
-public class MyAdvancedClass : MyClass
+class IBoth2Impl : IBoth2 
 {
 
-}
-
-public class MyDisposableAdvancedClass : MyClass, IDisposable
-{
-    public void Dispose() {}
-}
-
-
-public class MyClass
-{
-    public void Hello()
+    public void Base1Log()
     {
-        WriteLine("Hello");
+        WriteLine("I am really base 1");
     }
 }
+
+
+
