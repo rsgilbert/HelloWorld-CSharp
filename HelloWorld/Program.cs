@@ -9,119 +9,48 @@ public partial class Program
 {
     static void Main(string[] args)
     {
-        Dictionary<string, string> names = new Dictionary<string, string>();
-        names["simon"] = "Simon Peter";
-        names["gilbert"] = "Gilbert Robert";
-        names.Add("uk", "United Kingdom");
-        names["uk"] = "Uniked";
+        IList<string> strings = new[] { "Jeff", "Simon", "Jeff", "Jeff", "Peter", "Simon", "Jeff"};
+        ShowEachDistinctString(strings);
 
-        WriteLine(names["simon"]);
-        WriteLine(names["uk"]);
-        if(names.TryGetValue("gilbert", out string? fullName))
+        ISet<int> nums1 = new HashSet<int>()
         {
-            WriteLine($"Fullname is {fullName}");
-        }
-        
-
-        var textToNum = new Dictionary<string,int>
-        {
-            {"one", 1},
-            {"two", 2},
-            {"three", 3},
-            {"four", 4},
-             {"one2", 1},
-            {"two2", 2},
-            {"three2", 3},
-            {"four2", 4}
+            8, 6,1,2,3,5
         };
-        WriteLine(textToNum["one"]);
-        foreach(var kvp in textToNum)
+        foreach(int n in nums1)
         {
-            WriteLine($"{kvp.Key}={kvp.Value}");
+            WriteLine(n);
         }
 
-        IDictionary<char, string> letters = new Dictionary<char, string>
+        WriteLine("** ordered *");
+        ISet<int> nums2 = new SortedSet<int>()
         {
-            ['a'] = "A",
-            ['d'] = "D",
-            ['e'] = "E",
-            ['b'] = "B",
-            ['c'] = "C"
+            6,32,7,21,4,68,3
         };
-        WriteLine(letters['a']);
-        WriteLine(letters['b']);
-
-        foreach(var pair in letters)
+         foreach(int n in nums2)
         {
-            WriteLine(pair);
+            WriteLine(n);
         }
-
-        IDictionary<char, string> sortedLetters = new SortedDictionary<char, string>
-        {
-            ['a'] = "A",
-            ['d'] = "D",
-            ['e'] = "E",
-            ['b'] = "B",
-            ['c'] = "C"
-        };
-        WriteLine("*** Sorted ***");
-        foreach(var pair in sortedLetters)
-        {
-            WriteLine(pair);
-        }
-        WriteLine("*** Sorted end ***");
-
-
-        // ingore case in keys 
-        var numberNames = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            ["one"] = 1,
-            ["Two"] = 2,
-            ["thReE"] = 3
-        };
-        WriteLine(numberNames["ONE"]);
-        WriteLine(numberNames["three"]);
-
-        
     
-
-
     }
 
-  
-  
- 
-
-
-}
-
-public class UserCache 
-{
-    private readonly Dictionary<string, UserInfo> _cachedUserInfo = 
-        new Dictionary<string, UserInfo>();
-
-    public UserInfo GetInfo(string userHandle)
+    public static void ShowEachDistinctString(IList<string> strings)
     {
-        RemoveStaleCacheEntries();
-        if(!_cachedUserInfo.TryGetValue(userHandle, out UserInfo? info))
+        ISet<string> shown = new HashSet<string>();
+        foreach(string s in strings)
         {
-            info = FetchUserInfo(userHandle);
-            _cachedUserInfo.Add(userHandle, info);
+            if(shown.Add(s))
+            {
+                WriteLine($"Not a duplicate: {s}");
+            }
+            else 
+            {
+                WriteLine($"Duplicate found: {s}");
+            }
         }
-        return info;
+        WriteLine($"{strings.Count-shown.Count}/{strings.Count} are duplicates");
+
+        
     }
 
-    private UserInfo FetchUserInfo(string userHandle)
-    {
-        return new UserInfo();
-    }
 
-    private void RemoveStaleCacheEntries()
-    {
-
-    }
 }
-
-
-public class UserInfo 
-{}
