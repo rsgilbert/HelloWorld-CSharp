@@ -5,52 +5,37 @@ using System.Numerics;
 using System.Diagnostics;
 // using System.Collections;
 
-public partial class Program
+public class Program
 {
     static void Main(string[] args)
     {
-        IList<string> strings = new[] { "Jeff", "Simon", "Jeff", "Jeff", "Peter", "Simon", "Jeff"};
-        ShowEachDistinctString(strings);
+        Queue<int> q1 = new Queue<int>();
+        q1.Enqueue(1);
+        q1.Enqueue(20);
+        q1.Enqueue(30);
 
-        ISet<int> nums1 = new HashSet<int>()
-        {
-            8, 6,1,2,3,5
-        };
-        foreach(int n in nums1)
-        {
-            WriteLine(n);
-        }
+        WriteLine(q1.Peek());
+        WriteLine(q1.Dequeue());
+        WriteLine(q1.Peek());
+        WriteLine($"Count {q1.Count}");
+        int[] arr = q1.ToArray();
+        WriteLine(arr[0]);
 
-        WriteLine("** ordered *");
-        ISet<int> nums2 = new SortedSet<int>()
+        Stack<string> s1 = new Stack<string>();
+        s1.Push("John");
+        s1.Push("Simon");
+
+
+        WriteLine(s1.Peek());
+        WriteLine(s1.Pop());
+        if(s1.TryPop(out string? result))
         {
-            6,32,7,21,4,68,3
-        };
-         foreach(int n in nums2)
-        {
-            WriteLine(n);
+            WriteLine($"Result {result}");
         }
-    
+        WriteLine(s1.Count);
     }
 
-    public static void ShowEachDistinctString(IList<string> strings)
-    {
-        ISet<string> shown = new HashSet<string>();
-        foreach(string s in strings)
-        {
-            if(shown.Add(s))
-            {
-                WriteLine($"Not a duplicate: {s}");
-            }
-            else 
-            {
-                WriteLine($"Duplicate found: {s}");
-            }
-        }
-        WriteLine($"{strings.Count-shown.Count}/{strings.Count} are duplicates");
-
-        
-    }
+   
 
 
 }
