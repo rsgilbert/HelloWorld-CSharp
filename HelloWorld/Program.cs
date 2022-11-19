@@ -9,30 +9,20 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Queue<int> q1 = new Queue<int>();
-        q1.Enqueue(1);
-        q1.Enqueue(20);
-        q1.Enqueue(30);
+        LinkedList<string> list = new LinkedList<string>();
+        list.AddFirst(new LinkedListNode<string>("Purple"));
+        list.AddFirst(new LinkedListNode<string>("Green"));
+        list.AddFirst(new LinkedListNode<string>("Yellow"));
 
-        WriteLine(q1.Peek());
-        WriteLine(q1.Dequeue());
-        WriteLine(q1.Peek());
-        WriteLine($"Count {q1.Count}");
-        int[] arr = q1.ToArray();
-        WriteLine(arr[0]);
+        WriteLine(list.Count);
+        WriteLine(list.First?.Value); // Yellow 
+        WriteLine(list.Last?.Value);
 
-        Stack<string> s1 = new Stack<string>();
-        s1.Push("John");
-        s1.Push("Simon");
-
-
-        WriteLine(s1.Peek());
-        WriteLine(s1.Pop());
-        if(s1.TryPop(out string? result))
-        {
-            WriteLine($"Result {result}");
-        }
-        WriteLine(s1.Count);
+        list.RemoveFirst();
+        WriteLine(list.First?.Value);
+        list.RemoveFirst();
+        list.RemoveFirst();
+        WriteLine(list.Count);
     }
 
    
