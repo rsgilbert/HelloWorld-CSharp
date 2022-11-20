@@ -9,34 +9,22 @@ public class Program
 {
     static void Main(string[] args)
     {
-        MyBase cd = new CustomerDerived();
-        cd.Start();
+        MyCls m = new MyCls();
+        WriteLine(m);
     }
 
-   
- 
+
+
 
 
 
 }
 
-public class CustomerDerived :MyBase 
+
+public sealed class MyCls
 {
-    public override void Start()
+    public sealed override string ToString()
     {
-        WriteLine("start");
+        return "Yes yes";
     }
-}
-public class MyBase 
-{
-    public  virtual void Start() {WriteLine("base start");}
-}
-
-
-public abstract class House2 : AbstractHouse 
-{}
-
-public abstract class AbstractHouse 
-{
-    public abstract void Build();
 }
