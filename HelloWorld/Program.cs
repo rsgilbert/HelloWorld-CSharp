@@ -9,93 +9,63 @@ public class Program
 {
     static void Main(string[] args)
     {
-        IBase1 b1 = new Base1Impl(); 
-        // UseBase1(b1);
-        ISpecialBase1 s1 = new SpecialBase1Impl();
-        // UseBase1(s1);
-        IEnumerable<ISpecialBase1> bases = new[] { s1, s1 };
-        // WriteLine("** all bases");
-        // AllBases(bases);
-
-        ICollection<ISpecialBase1> specials = new List<ISpecialBase1>();
-        // AddBase(specials);
-
-
-        IRunner<IBase1> r1 = new Runner<IBase1>(b1);
-        PrintCurrentRunner(r1);
-
-        IRunner<ISpecialBase1> sr1 = new Runner<ISpecialBase1>(s1);
-        PrintCurrentRunner(sr1);
-
-    }
-
-    public static void PrintCurrentRunner(IRunner<IBase1> r)
-    {
-        WriteLine(r.Current);
-    }
-    static void UseBase1(IBase1 b)
-    {
-        b.Base1Log();
-    }
-
-    public static void AllBases(IEnumerable<IBase1> bases)
-    {
-        foreach (IBase1 b in bases)
+        Rectangle  r1 = new Rectangle()
         {
-            b.Base1Log();
+            Width = 5,
+            Height = 10
+        };
+        RoundedRectangle r2 = new RoundedRectangle()
+        {
+            Width = 3,
+            Height = 4
+        };
+        var arr1 = new[] { r1, r2 };
+        Array.Sort(arr1, new BoxAreaComparer());
+        foreach(var r in arr1)
+        {
+            WriteLine($"{r.Width}x{r.Height}");
         }
     }
 
-    public static void AddBase(ICollection<IBase1> bases)
-    {
-        bases.Add(new Base1Impl());
-    }
-
-
-
-}
-
-public class SpecialBase1Impl : ISpecialBase1
-{
-    public void Base1Log()
-    {
-        WriteLine("special impl of base1log");
-    }
-}
-public class Base1Impl : IBase1
-{
-    public void Base1Log()
-    {
-        WriteLine("base1 impl of base1log");
-    }
-
-}
-
-interface ISpecialBase1 : IBase1
-{
-}
-
-public interface IBase1
-{
-    void Base1Log();
-}
-
-
-
-public interface IRunner<out T>
-{
-    T Current { get; }
-
    
+ 
+
+
 
 }
 
-public class Runner<T> : IRunner<T>
+
+public class Rectangle 
 {
-    private T _current;
-    public Runner(T t)
-    {
-        _current = t;
-    }
-    public T Current => _current;
+    public double Width { get; set; }
+    public double Height { get; set; }
+
+    public double Area => Width * Height;
 }
+
+public class RoundedRectangle : Rectangle 
+{
+    public double CornerRadius { get; set; }
+}
+
+
+public class BoxAreaComparer : IComparer<Rectangle>
+{
+    public int Compare(Rectangle? r1, Rectangle? r2)
+    {
+        return Math.Sign(r1?.Area ?? 0 - r2?.Area ?? 0);
+    }
+}
+
+
+public class CornerSharpnessComparer : IComparer<RoundedRectangle>
+{
+    public int Compare(RoundedRectangle? r1, RoundedRectangle? r2)
+    {
+        // smaller corners are sharper
+        return Math.Sign(-1 * ((r1?.CornerRadius ?? 0) - (r2?.CornerRadius ?? 0)));
+    }
+}
+
+
+
