@@ -9,8 +9,8 @@ public class Program
 {
     static void Main(string[] args)
     {
-        MyCls m = new MyCls();
-        WriteLine(m);
+        Activity a = new AcademicActivity();
+        a.Start();
     }
 
 
@@ -21,10 +21,21 @@ public class Program
 }
 
 
-public sealed class MyCls
+
+public class AcademicActivity : Activity
 {
-    public sealed override string ToString()
+    public override void Start()
     {
-        return "Yes yes";
+        WriteLine("This is an academic activity");
+        base.Start();
+        
+    }
+}
+public class Activity
+{
+    protected private int count = 4;
+    public virtual void Start()
+    {
+        WriteLine("Starting activity");
     }
 }
