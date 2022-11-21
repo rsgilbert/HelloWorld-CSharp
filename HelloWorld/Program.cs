@@ -4,19 +4,36 @@ using System.Windows;
 using System.Numerics;
 using System.Diagnostics;
 // using System.Collections;
+using System.Net.Http;
 
 public class Program
 {
+  
     static void Main(string[] args)
     {
-        Activity a = new AcademicActivity()
+        WeakCache<string, string> cache = new WeakCache<string, string>();
+        AddData(cache);
+        if(cache.TryGetValue("one", out var result))
         {
-            NoOfActivities = 55,
-            NoOfTeachers = 3
-        };
-        a.Start();
+            WriteLine($"One is {result}");
+        }    
+        result = null;
+        GC.Collect();
+        if(cache.TryGetValue("one", out var result2))
+        {
+            WriteLine($"One is {result2}");
+        }    
+        else 
+        {
+            WriteLine("No value at the key one");
+        }
+    
     }
 
+    private static void AddData(WeakCache<string, string> cache)
+    {
+         cache.Add("one", new string("Jonah"));
+    }
 
 
 
@@ -24,72 +41,29 @@ public class Program
 
 }
 
-
-
-public class AcademicActivity : Activity
+public class WeakCache<TKey, TValue> where TKey : notnull where TValue : class
 {
-     private int _noOfTeachers;
-     private int aa2 = SetV(8);
-    public int NoOfTeachers
-    {
-        get
-        {
-            return _noOfTeachers;
-        }
-        set
-        {
-            WriteLine($"Setting no of Teachers to {value}");
-            _noOfTeachers = value;
-        }
-    }
-    public AcademicActivity() : base(10)
-    {
-        WriteLine("Constructing academic activity" + 10);
+    private readonly IDictionary<TKey, WeakReference<TValue>> _cache
+        = new Dictionary<TKey, WeakReference<TValue>>();
 
-    }
-    public override void Start()
+    public void Add(TKey key, TValue value)
     {
-        WriteLine("This is an academic activity");
-        base.Start();
-
+        _cache.Add(key, new WeakReference<TValue>(value));
     }
+    public bool TryGetValue(TKey key, out TValue? cachedValue)
+    {
+        cachedValue = null;
+        if (_cache.TryGetValue(key, out WeakReference<TValue>? weakValue))
+        {
+            var isAlive = weakValue.TryGetTarget(out cachedValue);
+            if(!isAlive)
+            {   
+                _cache.Remove(key);
+            }
+        }
+        return _cache.ContainsKey(key);
+    }
+
 }
-public class Activity
-{
-    public static int SetV(int a)
-    {
-        WriteLine($"Setting value {a}");
-        return a * 2;
-        
-    }
 
-    private int a1 = SetV(10);
-
-    private int _noOfActivities;
-    public int NoOfActivities
-    {
-        get
-        {
-            return _noOfActivities;
-        }
-        set
-        {
-            WriteLine($"Setting no of activities to {value}");
-            _noOfActivities = value;
-        }
-    }
-    public Activity()
-    {
-        WriteLine("Constructing activity");
-    }
-    public Activity(int i)
-    {
-        WriteLine("Constructing activity " + i);
-    }
-    protected private int count = 4;
-    public virtual void Start()
-    {
-        WriteLine("Starting activity");
-    }
-}
 
