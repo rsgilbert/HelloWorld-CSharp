@@ -11,27 +11,18 @@ public class Program
 
     static void Main(string[] args)
     {
-        // special unboxing of Nullable<T>
-          object b = null;
-        int? n = b as int?;
-        int? n2 = (int?) b;
-        WriteLine(n);
-        WriteLine(n2);
-        // int n3 = (int)b;
-        // WriteLine(n3);
-
-        var b2 = new Box<int?>(null);
-        // int n = b as int;
-        int? n3 = b2.Value;
-        WriteLine(n3);
+        using(var r = new StreamReader("Program.cs"))
+        {
+            while(!r.EndOfStream)
+            {
+                Console.WriteLine(r.ReadLine());
+                r.Dispose();
+            }
+        }
 
 
     }
 
-    static void CallDispose(IDisposable o)
-    {
-        o.Dispose();
-    }
 
 
 
@@ -40,15 +31,5 @@ public class Program
 
 
 }
-public class Box<T>
-    // where T : struct
-{
-    public readonly T Value;
 
-    public Box(T value)
-    {
-        Value = value;
-    }
-    public override string ToString() => Value.ToString() ?? "";
-    public new string GetType() => "int";
-}
+
