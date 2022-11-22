@@ -20,10 +20,10 @@ public class Program
         // int n3 = (int)b;
         // WriteLine(n3);
 
-        // var b = new Box<int?>(null);
+        var b2 = new Box<int?>(null);
         // int n = b as int;
-        // int n3 = b.Value;
-        // WriteLine(n3);
+        int? n3 = b2.Value;
+        WriteLine(n3);
 
 
     }
