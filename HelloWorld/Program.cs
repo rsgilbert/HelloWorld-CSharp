@@ -11,78 +11,45 @@ public class Program
 
     static void Main(string[] args)
     {
-        ReadFiles();
+        int n = 5;
+        Show(n);
+        Show(new Box<int>(10));
 
     }
 
-    static void ReadFiles()
+    static void Show(object o)
     {
-        foreach (string filename in Directory.EnumerateFiles("."))
+        Console.WriteLine(o.ToString());
+        WriteLine(o.GetType());
+        if(o is int i)
         {
-            Console.WriteLine(filename);
+            WriteLine(i * 3);
         }
     }
 
-    static void CopyFiles(string fname1, string fname2)
-    {
-        using (Stream source = File.OpenRead(fname1))
-        using (Stream destination = File.Create(fname2))
-        {
-            source.CopyTo(destination);
-        }
-    }
+    
 
-    static void ReadMoreCompact()
-    {
-        using StreamReader reader = File.OpenText(@"./HelloWorld.csproj");
-        Console.WriteLine(reader.ReadToEnd());
-    }
-
-    static void ReadCompact()
-    {
-        using (StreamReader reader = File.OpenText(@"./HelloWorld.csproj"))
-        {
-            Console.WriteLine(reader.ReadToEnd());
-        }
-    }
-
-    static void ReadVerbose()
-    {
-        StreamReader reader = File.OpenText(@"./HelloWorld.csproj");
-        try
-        {
-            Console.WriteLine(reader.ReadToEnd());
-        }
-        finally
-        {
-            if (reader != null)
-            {
-                WriteLine("Disposing reader " + reader);
-                reader.Dispose();
-            }
-            else
-            {
-                WriteLine("reader is null");
-            }
-        }
-    }
-
+    
+    
 }
 
-
-
-public sealed class MyLogger : IDisposable
+public class Box<T> 
+    where T : struct
 {
-    private StreamWriter? _file;
+    public readonly T Value;
 
-    public MyLogger(string filePath)
+    public Box(T value)
     {
-        _file = File.CreateText(filePath);
+        Value = value;
     }
+    public override string ToString() => Value.ToString() ?? "";
 
-    public void Dispose()
-    {
-        _file?.Dispose(); 
-        _file = null;
-    }
+    // wont work cuz GetType is not virtual
+    public new Type GetType() => Value.GetType();   
 }
+
+
+
+
+
+
