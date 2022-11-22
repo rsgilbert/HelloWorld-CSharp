@@ -11,13 +11,11 @@ public class Program
 
     static void Main(string[] args)
     {
-        using(var r = new StreamReader("Program.cs"))
+        WriteLine(Divide(0, 0));
+
+        double Divide(double x, int y)
         {
-            while(!r.EndOfStream)
-            {
-                Console.WriteLine(r.ReadLine());
-                r.Dispose();
-            }
+            return x / y;
         }
 
 
