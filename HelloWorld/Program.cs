@@ -8,62 +8,81 @@ using System.Net.Http;
 
 public class Program
 {
-  
+
     static void Main(string[] args)
     {
-        WeakCache<string, string> cache = new WeakCache<string, string>();
-        AddData(cache);
-        if(cache.TryGetValue("one", out var result))
+        ReadFiles();
+
+    }
+
+    static void ReadFiles()
+    {
+        foreach (string filename in Directory.EnumerateFiles("."))
         {
-            WriteLine($"One is {result}");
-        }    
-        result = null;
-        GC.Collect();
-        if(cache.TryGetValue("one", out var result2))
-        {
-            WriteLine($"One is {result2}");
-        }    
-        else 
-        {
-            WriteLine("No value at the key one");
+            Console.WriteLine(filename);
         }
-    
     }
 
-    private static void AddData(WeakCache<string, string> cache)
+    static void CopyFiles(string fname1, string fname2)
     {
-         cache.Add("one", new string("Jonah"));
-    }
-
-
-
-
-
-}
-
-public class WeakCache<TKey, TValue> where TKey : notnull where TValue : class
-{
-    private readonly IDictionary<TKey, WeakReference<TValue>> _cache
-        = new Dictionary<TKey, WeakReference<TValue>>();
-
-    public void Add(TKey key, TValue value)
-    {
-        _cache.Add(key, new WeakReference<TValue>(value));
-    }
-    public bool TryGetValue(TKey key, out TValue? cachedValue)
-    {
-        cachedValue = null;
-        if (_cache.TryGetValue(key, out WeakReference<TValue>? weakValue))
+        using (Stream source = File.OpenRead(fname1))
+        using (Stream destination = File.Create(fname2))
         {
-            var isAlive = weakValue.TryGetTarget(out cachedValue);
-            if(!isAlive)
-            {   
-                _cache.Remove(key);
+            source.CopyTo(destination);
+        }
+    }
+
+    static void ReadMoreCompact()
+    {
+        using StreamReader reader = File.OpenText(@"./HelloWorld.csproj");
+        Console.WriteLine(reader.ReadToEnd());
+    }
+
+    static void ReadCompact()
+    {
+        using (StreamReader reader = File.OpenText(@"./HelloWorld.csproj"))
+        {
+            Console.WriteLine(reader.ReadToEnd());
+        }
+    }
+
+    static void ReadVerbose()
+    {
+        StreamReader reader = File.OpenText(@"./HelloWorld.csproj");
+        try
+        {
+            Console.WriteLine(reader.ReadToEnd());
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                WriteLine("Disposing reader " + reader);
+                reader.Dispose();
+            }
+            else
+            {
+                WriteLine("reader is null");
             }
         }
-        return _cache.ContainsKey(key);
     }
 
 }
 
 
+
+public sealed class MyLogger : IDisposable
+{
+    private StreamWriter? _file;
+
+    public MyLogger(string filePath)
+    {
+        _file = File.CreateText(filePath);
+    }
+
+    public void Dispose()
+    {
+        _file?.Dispose(); 
+        _file = null;
+    }
+}
