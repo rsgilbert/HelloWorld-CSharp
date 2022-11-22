@@ -13,7 +13,7 @@ public class Program
     {
         try
         {
-            using (var r = new StreamReader("/a/Program.css"))
+            using (var r = new StreamReader("Abacus.cs"))
             {
                 while (!r.EndOfStream)
                 {
@@ -24,21 +24,21 @@ public class Program
         }
         
         catch(FileNotFoundException x)
+        when(x.FileName?.Contains("Program.css") == true)
         {
             WriteLine($"File {x.FileName} is missing");
-            WriteLine(x.InnerException);
-            // WriteLine(x.Message);
-            // WriteLine(x.StackTrace);
-            // WriteLine(x.ToString());
             WriteLine(x.TargetSite);
+        }
+        catch(FileNotFoundException x)
+        when(x.FileName?.Contains("Abacus.cs") == true)
+        {
+            WriteLine("Abacus is a bad file name");
         }
    
         catch(DirectoryNotFoundException x)
         {
             WriteLine($"Directory not found. {x.Message}");
         }
-        catch(IOException x)
-        {}
 
         try
         {
@@ -52,6 +52,7 @@ public class Program
             }
             WriteLine("Could not divide by zero");
         }
+        
 
         double Divide(int x, int y)
         {
