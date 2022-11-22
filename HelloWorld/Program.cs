@@ -11,30 +11,19 @@ public class Program
 
     static void Main(string[] args)
     {
-        var dv = new DisposableValue();
-        WriteLine("passing value variable to method");
-        CallDispose(dv);
-        CallDispose(dv); // still disposing for first time cuz the box created for the argument uses a copy of the value variable
-        CallDispose(dv);
+        // special unboxing of Nullable<T>
+          object b = null;
+        int? n = b as int?;
+        int? n2 = (int?) b;
+        WriteLine(n);
+        WriteLine(n2);
+        // int n3 = (int)b;
+        // WriteLine(n3);
 
-        WriteLine("passing interface variable to method");
-        IDisposable idisp = dv;
-        CallDispose(idisp);
-        CallDispose(idisp);
-        idisp.Dispose();
-        dv.Dispose();
-
-        WriteLine("Calling directly on value variable");
-        dv = new DisposableValue();
-        dv.Dispose();
-        dv.Dispose();
-        dv.Dispose();
-       
-       WriteLine("passing value variable to method");
-        CallDispose(dv);
-        CallDispose(dv);
-        CallDispose(dv);
-
+        // var b = new Box<int?>(null);
+        // int n = b as int;
+        // int n3 = b.Value;
+        // WriteLine(n3);
 
 
     }
@@ -44,31 +33,22 @@ public class Program
         o.Dispose();
     }
 
-    
 
-    
 
-    
-    
+
+
+
+
 }
-
-public struct DisposableValue: IDisposable
+public class Box<T>
+    // where T : struct
 {
-    private bool _disposedYet;
+    public readonly T Value;
 
-    public void Dispose()
+    public Box(T value)
     {
-        if(!_disposedYet)
-        {
-            WriteLine("Disposing for first time");
-            _disposedYet = true;
-        }
-        else 
-        {
-            WriteLine("Was already disposed");
-        }
+        Value = value;
     }
+    public override string ToString() => Value.ToString() ?? "";
+    public new string GetType() => "int";
 }
-
-
-
