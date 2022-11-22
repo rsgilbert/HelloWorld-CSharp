@@ -11,45 +11,64 @@ public class Program
 
     static void Main(string[] args)
     {
-        int n = 5;
-        Show(n);
-        Show(new Box<int>(10));
+        var dv = new DisposableValue();
+        WriteLine("passing value variable to method");
+        CallDispose(dv);
+        CallDispose(dv); // still disposing for first time cuz the box created for the argument uses a copy of the value variable
+        CallDispose(dv);
+
+        WriteLine("passing interface variable to method");
+        IDisposable idisp = dv;
+        CallDispose(idisp);
+        CallDispose(idisp);
+        idisp.Dispose();
+        dv.Dispose();
+
+        WriteLine("Calling directly on value variable");
+        dv = new DisposableValue();
+        dv.Dispose();
+        dv.Dispose();
+        dv.Dispose();
+       
+       WriteLine("passing value variable to method");
+        CallDispose(dv);
+        CallDispose(dv);
+        CallDispose(dv);
+
+
 
     }
 
-    static void Show(object o)
+    static void CallDispose(IDisposable o)
     {
-        Console.WriteLine(o.ToString());
-        WriteLine(o.GetType());
-        if(o is int i)
+        o.Dispose();
+    }
+
+    
+
+    
+
+    
+    
+}
+
+public struct DisposableValue: IDisposable
+{
+    private bool _disposedYet;
+
+    public void Dispose()
+    {
+        if(!_disposedYet)
         {
-            WriteLine(i * 3);
+            WriteLine("Disposing for first time");
+            _disposedYet = true;
+        }
+        else 
+        {
+            WriteLine("Was already disposed");
         }
     }
-
-    
-
-    
-    
 }
-
-public class Box<T> 
-    where T : struct
-{
-    public readonly T Value;
-
-    public Box(T value)
-    {
-        Value = value;
-    }
-    public override string ToString() => Value.ToString() ?? "";
-
-    // wont work cuz GetType is not virtual
-    public new Type GetType() => Value.GetType();   
-}
-
-
-
 
 
 
