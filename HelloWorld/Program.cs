@@ -3,8 +3,9 @@ using static System.Math;
 using System.Windows;
 using System.Numerics;
 using System.Diagnostics;
-// using System.Collections;
 using System.Net.Http;
+
+
 
 public class Program
 {
@@ -13,50 +14,22 @@ public class Program
     {
         try
         {
-            using (var r = new StreamReader("Abacus.cs"))
-            {
-                while (!r.EndOfStream)
-                {
-                    Console.WriteLine(r.ReadLine());
-                    r.Dispose();
-                }
-            }
+            WriteLine("Trying");
+            int  n = 0;
+            // int i = 4 / n;
+            int k = Div(3, 0);
         }
-        
-        catch(FileNotFoundException x)
-        when(x.FileName?.Contains("Program.css") == true)
+        catch(DivideByZeroException x)
         {
-            WriteLine($"File {x.FileName} is missing");
-            WriteLine(x.TargetSite);
+            WriteLine(x.Message);
         }
-        catch(FileNotFoundException x)
-        when(x.FileName?.Contains("Abacus.cs") == true)
+        finally
         {
-            WriteLine("Abacus is a bad file name");
+            WriteLine("Doing  a finally");
         }
-   
-        catch(DirectoryNotFoundException x)
+        int Div(int n, int m) 
         {
-            WriteLine($"Directory not found. {x.Message}");
-        }
-
-        try
-        {
-            WriteLine(Divide(0, 0));
-        }
-        catch (DivideByZeroException x)
-        {
-            foreach (var p in x.Data)
-            {
-                WriteLine(p);
-            }
-            WriteLine("Could not divide by zero");
-        }
-        
-
-        double Divide(int x, int y)
-        {
-            return x / y;
+            return n / m;
         }
 
 
