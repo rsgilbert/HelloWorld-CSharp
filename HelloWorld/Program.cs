@@ -11,67 +11,25 @@ public class Program
 
     static void Main(string[] args)
     {
-        try
-        {
-            throw new DeviceNotReadyException(DeviceStatus.Disconnected);
-        }
-        catch (DeviceNotReadyException x)
-        {
-            WriteLine(x.Message);
-            WriteLine(x.Status);
-        }
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
+
+        throw new InvalidCastException("Why cast badly??");
+
+
+
+        WriteLine("Hey");
 
 
 
     }
 
-
-
-
-
-}
-
-[Serializable]
-public class DeviceNotReadyException : InvalidOperationException
-{
-    public DeviceNotReadyException(DeviceStatus status)
-        : this("Device status must be ready", status)
-    { }
-
-    public DeviceNotReadyException(string message, DeviceStatus status)
-        : base(message)
+    private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        Status = status;
-    }
-
-    public DeviceNotReadyException(string message, DeviceStatus status, Exception innerException)
-        : base(message, innerException)
-    {
-        Status = status;
+        WriteLine($"An exception went unhandled: ${e.ExceptionObject}");
     }
 
 
-    public DeviceStatus Status { get; }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        base.GetObjectData(info, context);
-        info.AddValue("Status", Status);
-    }
-
-    protected DeviceNotReadyException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-        Status = (DeviceStatus?) info.GetValue("Status", typeof(DeviceStatus)) ?? DeviceStatus.Initializing;
-    }
-}
 
 
-public enum DeviceStatus
-{
-    Disconnected,
-    Initializing,
-    Failed,
-    Ready
 }
