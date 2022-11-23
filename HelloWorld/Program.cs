@@ -16,32 +16,40 @@ public class Program
         {
             WriteLine("Trying");
             int  n = 0;
-            // int i = 4 / n;
-            int k = Div(3, 0);
+            throw new AggregateException();
+           // int i = 4 / n;
+
         }
         catch(DivideByZeroException x)
         {
             WriteLine(x.Message);
+            throw; 
         }
         finally
         {
             WriteLine("Doing  a finally");
         }
-        int Div(int n, int m) 
+    
+        WriteLine(CountCommas("hey there, madam, how are you?"));
+        WriteLine(CountCommas(null));
+
+   
+
+    }
+
+    public static int CountCommas(string? text)
+    {
+        if(text ==null)
         {
-            return n / m;
+            throw new ArgumentNullException(nameof(text));
         }
-
-
+        return text.Count(c => c == ',');
     }
 
 
 
-
-
-
-
-
 }
+
+
 
 
