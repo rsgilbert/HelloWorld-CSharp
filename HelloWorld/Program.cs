@@ -13,33 +13,30 @@ public class Program
 
     static void Main(string[] args)
     {
-        bool cb()
+        void printSumOfTwo(int a1, int a2)
         {
-            WriteLine("Hey there, you called me back!");
-            return true;
+            WriteLine(a1+a2);
         }
-        // CallMeRightBack(cb);
-        bool cbReturningFalse()
-        {
-            WriteLine("I return false when you call me, sir");
-            return false;
-        }
+        performBinaryAction(printSumOfTwo, 100, 20);
 
-        NoArgCallback callbacks = cb;
-        callbacks += cbReturningFalse;
-        foreach (NoArgCallback c in callbacks.GetInvocationList())
+        int TotalStringLength(string s1, string s2, string s3)
         {
-            WriteLine(c());
+            return s1.Length + s2.Length + s3.Length;
         }
-
+        doAndPrintResult(TotalStringLength, "Jag", "cups", "tennis"); // 13
     }
 
-    public static void CallMeRightBack(NoArgCallback userCallback)
+    static void performBinaryAction(Action<int,int> action, int p1, int p2)
     {
-        bool result = userCallback();
-        WriteLine(result);
+        action(p1, p2);
     }
 
+    static void doAndPrintResult(Func<string, string, string, int> func, string s1, string s2, string s3)
+    {
+        WriteLine(func(s1,s2,s3));
+    }
+
+    
 
 
 
