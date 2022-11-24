@@ -13,35 +13,36 @@ public class Program
 
     static void Main(string[] args)
     {
+        bool cb()
+        {
+            WriteLine("Hey there, you called me back!");
+            return true;
+        }
+        // CallMeRightBack(cb);
+        bool cbReturningFalse()
+        {
+            WriteLine("I return false when you call me, sir");
+            return false;
+        }
 
-        Predicate<int> g0 = GreaterThanZero;
-        Predicate<int> megaPredicate1 = g0 + GreaterThanOne + GreaterThanTwo;
-        megaPredicate1 = megaPredicate1 - GreaterThanTwo;
-        WriteLine(megaPredicate1(2));
-
-        Predicate<int> megaPred2 = g0;
-        megaPred2 += GreaterThanTwo;
-        megaPred2 += GreaterThanOne;
-        WriteLine(megaPred2(2));
-
+        NoArgCallback callbacks = cb;
+        callbacks += cbReturningFalse;
+        foreach (NoArgCallback c in callbacks.GetInvocationList())
+        {
+            WriteLine(c());
+        }
 
     }
-    private static bool GreaterThanZero(int v)
+
+    public static void CallMeRightBack(NoArgCallback userCallback)
     {
-        WriteLine($"Executing {GreaterThanZero}");
-        return v > 0;
+        bool result = userCallback();
+        WriteLine(result);
     }
-    private static bool GreaterThanOne(int v)
-    {
-        WriteLine($"Executing {GreaterThanOne}");
-        return v > 1;
-    }
-    private static bool GreaterThanTwo(int v)
-    {
-        WriteLine($"Executing {GreaterThanTwo}");
-        return v > 2;
-    }
+
 
 
 
 }
+
+public delegate bool NoArgCallback();
