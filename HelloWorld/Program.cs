@@ -10,48 +10,38 @@ using System.Reflection;
 public class Program
 {
 
+
     static void Main(string[] args)
     {
 
-        var w0 = new Works(0);
-        Predicate<int> p0 = w0.Working;
-        WriteLine(p0(1));
-        WriteLine(p0(-5));
-        w0.Count = 5;
-        WriteLine(p0(1));
+        Predicate<int> g0 = GreaterThanZero;
+        Predicate<int> megaPredicate1 = g0 + GreaterThanOne + GreaterThanTwo;
+        megaPredicate1 = megaPredicate1 - GreaterThanTwo;
+        WriteLine(megaPredicate1(2));
 
-        var w1 = new Works(1);
-        Predicate<int> p1 = w1.Working;
-        WriteLine(p1(1));
-
-// creating delegate using reflection
-        MethodInfo? m1 = typeof(Works).GetMethod("Working");
-        Predicate<int> p2 = (Predicate<int>) m1.CreateDelegate(typeof(Predicate<int>), w1);
-        WriteLine(p2(11));
-
-
+        Predicate<int> megaPred2 = g0;
+        megaPred2 += GreaterThanTwo;
+        megaPred2 += GreaterThanOne;
+        WriteLine(megaPred2(2));
 
 
     }
-
-
-
-
-}
-
-
-class Works
-{
-    public int Count { get; set; }
-    public static bool AlwaysFalse(int k) => false;
-
-    public Works(int count)
+    private static bool GreaterThanZero(int v)
     {
-        Count = count;
+        WriteLine($"Executing {GreaterThanZero}");
+        return v > 0;
+    }
+    private static bool GreaterThanOne(int v)
+    {
+        WriteLine($"Executing {GreaterThanOne}");
+        return v > 1;
+    }
+    private static bool GreaterThanTwo(int v)
+    {
+        WriteLine($"Executing {GreaterThanTwo}");
+        return v > 2;
     }
 
-    public bool Working(int comp)
-    {
-        return comp > Count;
-    }
+
+
 }
