@@ -11,25 +11,29 @@ public class Program
 
     static void Main(string[] args)
     {
-        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        int[] bins = { 0, -5, -1, 50, 2, 4 };
+        bool IsGreaterThanZero(int value) => value > 0;
+
+        int firstGreater = Array.FindIndex(bins, Works.AlwaysFalse);
+        WriteLine(firstGreater);
+
+        // We are refering to IsGreaterThanZero by name, the name IsGreaterThanZero is in this case a method case 
+        // since there maybe many methods called IsGreaterThanZero but taking different parameters
+        Predicate<int> p = IsGreaterThanZero;// new Predicate<int>(IsGreaterThanZero);
+        WriteLine(p(10));
+        var m = p(3);
 
 
-        throw new InvalidCastException("Why cast badly??");
-
-
-
-        WriteLine("Hey");
-
-
-
+    
     }
 
-    private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-        WriteLine($"An exception went unhandled: ${e.ExceptionObject}");
-    }
 
 
 
+}
 
+
+class Works
+{
+    public static bool AlwaysFalse(int k) => false;
 }
