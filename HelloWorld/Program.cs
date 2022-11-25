@@ -13,33 +13,44 @@ public class Program
 
     static void Main(string[] args)
     {
-        void printSumOfTwo(int a1, int a2)
-        {
-            WriteLine(a1+a2);
-        }
-        performBinaryAction(printSumOfTwo, 100, 20);
+        //  illustrating contravariance
+        MyPredicate<object> po = IsLongString;
+        MyPredicate<string> ps = po;
+        WriteLine($"is long: {ps("Jamesm")}");
 
-        int TotalStringLength(string s1, string s2, string s3)
-        {
-            return s1.Length + s2.Length + s3.Length;
-        }
-        doAndPrintResult(TotalStringLength, "Jag", "cups", "tennis"); // 13
+        // illustrating covariance
+        MyFunc<string, string> fb = Capitalize;
+        MyFunc<string, object> fo = fb;
+
+       
+        string s = "FJ";
+        object o = s;
     }
 
-    static void performBinaryAction(Action<int,int> action, int p1, int p2)
+    public static string Capitalize(object o) 
     {
-        action(p1, p2);
+        return o?.ToString()?.ToUpper() ?? "";
     }
 
-    static void doAndPrintResult(Func<string, string, string, int> func, string s1, string s2, string s3)
+    public static bool IsLongString(object o)
     {
-        WriteLine(func(s1,s2,s3));
+        return o is string s && s.Length > 5;
     }
-
     
 
 
 
 }
 
-public delegate bool NoArgCallback();
+// TResult is covariant
+// This means that if can  implicitly convert from string to object,
+// Then you can implicitly convert from MyFunc<string, string> to MyFunc<string, object>
+// Simply saying: If it can output a string, then its okay to save the string as an object. 
+public delegate TResult MyFunc<in T,  out TResult>(T arg);
+
+// the T type argument in MyPredicate is contravariant.
+// This means that if you can implicitly convert from string to object,
+// then you can implicitly convert from MyPredicate<object> to MyPredicate<string>
+// Simply saying: If it can work on any object, then it can work on any string as well.
+// <in T> is like saying: accepts any kind of T
+public delegate bool MyPredicate<in T>(T t);
