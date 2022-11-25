@@ -1,11 +1,5 @@
 ﻿using static System.Console;
 using static System.Math;
-using System.Windows;
-using System.Numerics;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Reflection;
 
 public class Program
 {
@@ -13,50 +7,30 @@ public class Program
 
     static void Main(string[] args)
     {
-        //  illustrating contravariance
-        MyPredicate<object> po = IsLongString;
-        MyPredicate<string> ps = po;
-        WriteLine($"is long: {ps("Jamesm")}");
+        int[] bins = { 0, 0, 0, 1, 2, 3, 4 };
+        int idx = GetIndexOfFirstNonEmptyBin(bins);
+        WriteLine(idx);
 
-        // illustrating covariance
-        MyFunc<string, string> fb = Capitalize;
-        MyFunc<string, object> fo = fb;
+        EventHandler clickHandler = delegate {
+            WriteLine("Clicked");
+        }
 
-       
-        string s = "FJ";
-        object o = s;
-
-        Predicate<string> pred1 = IsLongString;
-        MyPredicate<string> pred2 = new MyPredicate<string>(pred1);
-
-        Func<string, bool> func1 = new Func<string,bool>(pred2);
-        WriteLine(func1("ably said"));
     }
 
-    public static string Capitalize(object o) 
+    public static int GetIndexOfFirstNonEmptyBin(int[] bins)
     {
-        return o?.ToString()?.ToUpper() ?? "";
+        return Array.FindIndex(
+            bins,
+            (int v) =>
+            {
+                return v > 0;
+            }
+        );
     }
 
-    public static bool IsLongString(object o)
-    {
-        return o is string s && s.Length > 5;
-    }
-    
 
 
 
 }
 
-// TResult is covariant
-// This means that if can  implicitly convert from string to object,
-// Then you can implicitly convert from MyFunc<string, string> to MyFunc<string, object>
-// Simply saying: If it can output a string, then its okay to save the string as an object. 
-public delegate TResult MyFunc<in T,  out TResult>(T arg);
 
-// the T type argument in MyPredicate is contravariant.
-// This means that if you can implicitly convert from string to object,
-// then you can implicitly convert from MyPredicate<object> to MyPredicate<string>
-// Simply saying: If it can work on any object, then it can work on any string as well.
-// <in T> is like saying: accepts any kind of T
-public delegate bool MyPredicate<in T>(T t);
