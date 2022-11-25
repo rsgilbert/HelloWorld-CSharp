@@ -25,6 +25,12 @@ public class Program
        
         string s = "FJ";
         object o = s;
+
+        Predicate<string> pred1 = IsLongString;
+        MyPredicate<string> pred2 = new MyPredicate<string>(pred1);
+
+        Func<string, bool> func1 = new Func<string,bool>(pred2);
+        WriteLine(func1("ably said"));
     }
 
     public static string Capitalize(object o) 
