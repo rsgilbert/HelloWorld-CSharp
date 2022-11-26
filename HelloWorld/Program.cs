@@ -3,32 +3,14 @@ using static System.Math;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-// using System.Linq;
+using System.Linq;
 public class Program
 {
     static void Main(string[] args)
     {
-        var evenFib = from n in Fibonacci() 
-            where n % 2 == 0 
-            select n;
-        foreach(BigInteger n in evenFib)
+        foreach(var course in Course.ShortEvenIdxCourses())
         {
-            if(n > 1000) return;
-            WriteLine(n);
-        }
-    }
-
-    static IEnumerable<BigInteger> Fibonacci()
-    {
-        BigInteger n1 = 1;
-        BigInteger n2 = 1;
-        yield return n1; 
-        while(true)
-        {
-            yield return n2;
-            BigInteger temp = n1;
-            n1 = n2;
-            n2 = temp + n2;
+            WriteLine(course.Title);
         }
     }
 
@@ -37,37 +19,60 @@ public class Program
 
 }
 
-public static class BigIntegerLinqProvider 
+public class Course
 {
-    public static IEnumerable<BigInteger> Where(this IEnumerable<BigInteger> en, Predicate<BigInteger> filter)
-    {
-        WriteLine("Filtering");
-        foreach(var bi in en)
-        {
-            if(filter(bi))
-            {
-                yield return bi;
-            }
-        }
-        
-    }
-}
+    public string Title { get; set; } = "";
+    public string Category { get; set; } = "";
+    public int Number { get; set; }
+    public DateTime PublicationDate { get; set; }
+    public TimeSpan Duration { get; set; }
 
-// public static class CustomLinqProvider
-// {
-//     public static string[] Where(this string[] arr, Predicate<string> filter)
-//     {
-//         WriteLine("Filtering array");
-//         return Array.FindAll(arr, filter);
-//     }
-//     public static T[] Select<T>(this string[] arr, Func<string, T> map)
-//     {
-//         WriteLine("Selecting...");
-//         var result = new T[arr.Length];
-//         for(int i = 0; i < arr.Length; i++)
-//         {
-//             result[i] = map(arr[i]);
-//         }
-//         return result;
-//     }
-// }
+    public static IEnumerable<Course> ShortEvenIdxCourses()
+    {
+        return Catalog
+            .Where((course, idx) => (idx % 2 == 0 && course.Duration.TotalHours < 3));
+    }
+    public static readonly Course[] Catalog =
+    {
+        new Course
+        {
+            Title = "Elements of Geometry",
+            Category = "MAT",
+            Number = 101,
+            PublicationDate = new DateTime(2001, 3, 20),
+            Duration = TimeSpan.FromHours(3),
+        },
+        new Course
+        {
+            Title = "Graph Theory",
+            Category = "MAT",
+            Number = 102,
+            PublicationDate = new DateTime(2015, 5, 21),
+            Duration = TimeSpan.FromHours(1),
+        },
+        new Course
+        {
+               Title = "Discrete Maths",
+            Category = "MAT",
+            Number = 103,
+            PublicationDate = new DateTime(2014, 5, 21),
+            Duration = TimeSpan.FromHours(2),
+        },
+        new Course
+        {
+            Title = "Theory of Computation",
+            Category = "CS",
+            Number = 104,
+            PublicationDate = new DateTime(2017, 3, 2),
+            Duration = TimeSpan.FromHours(5),
+        },
+        new Course
+        {
+               Title = "Data Structures and Algorithms",
+            Category = "CS",
+            Number = 104,
+            PublicationDate = new DateTime(2017,11, 15),
+            Duration = TimeSpan.FromHours(1),
+        }
+    };
+}
