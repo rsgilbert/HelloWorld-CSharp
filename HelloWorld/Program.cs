@@ -1,75 +1,74 @@
 ﻿using static System.Console;
 using static System.Math;
-using System.Linq.Expressions;
-
+using System.Globalization;
 public class Program
 {
-
-
-
     static void Main(string[] args)
     {
-        Comparison<string> lengthComparison = (s1, s2) =>
-            Math.Sign(s1.Length - s2.Length);
-
-        string str1 = "Josephine";
-        string str2 = "Kalypso";
-        string str3 = "Zan";
-        string str4 = "Nina Myers";
-        string str5 = "Zi";
-        string[] names = { str1, str2, str3, str4 , str5};
-        Array.Sort(names, lengthComparison);
-        foreach (string nm in names)
+        IEnumerable<CultureInfo> commaCultures =
+            from culture in CultureInfo.GetCultures(CultureTypes.AllCultures)
+            where culture.NumberFormat.NumberDecimalSeparator == "." 
+                && culture.NumberFormat.NumberDecimalDigits == 3
+                && culture.ToString().StartsWith("en")
+            select culture;
+        foreach(CultureInfo culture in commaCultures)
         {
-            WriteLine(nm);
+            // WriteLine(culture);
         }
 
-        // sort using first char comparer
-        // WriteLine("***** First char comparer *****");
-        // Array.Sort(names, new FirstCharComparer());
-        //  foreach (string nm in names)
-        // {
-        //     WriteLine(nm);
-        // }
 
-        // using first char comparer but as delegate
-        WriteLine("***** First char comparer but as delegate *****");
-        Array.Sort(names, new FirstCharComparer().Compare);
-         foreach (string nm in names)
+        string[] colors = { "green", "yellow", "indigo", "violet", "blue", "red", "Black", "Brown"};
+        // query expression syntax
+        var shortColors = from color in colors 
+            where color.Length <= 4
+            select (color.Length, color);
+        foreach(var c in shortColors)
         {
-            WriteLine(nm);
+            WriteLine(c);
         }
-    }
+
+        // chained method calls
+        var longColorNames = colors.Where(c => c.Length >= 6).Select((c, i) => (i, c.Length, c));
+        foreach(var c in longColorNames)
+        {
+            WriteLine(c);
+        }
+
+
+        //  b colors 
+        var bColors = from color in colors 
+            let lowercaseColor = color.ToLower()
+            where lowercaseColor.StartsWith("b")
+            select (color, lowercaseColor);
+         foreach(var c in bColors)
+        {
+            WriteLine(c);
+        }
+
+        WriteLine("*** using loud provider");
+        var q = from lp in new LoudProvider()
+            where lp == "Chimpanzee"  // lp's type is deduced from the delegate in LoudProvider#Where
+            select lp.Substring(0, 6);
+        WriteLine(q);
+
+
+     }
+
     
-    private class FirstCharComparer : IComparer<string>
-    {
-        public int Compare(string? s, string? t)
-        {
-            if(s == null) return -1;
-            if(t == null) return -1;
-            return Math.Sign(s[0] - t[0]);
-        }
-    }
-
-
-
 }
 
 
-public class UnEventful
+public class LoudProvider 
 {
-    public event Action<string>? Announcement;
-
-    public void Announce(string message)
+    public LoudProvider Where(Func<string,bool> pred)
     {
-        Announcement?.Invoke(message);
-        Announcement2?.Invoke(message);
+        WriteLine("So you want to filter out something, huh");
+        return this;
     }
 
-    private Action<string>? Announcement2;
-
-    public void add_Annoucement2(Action<string> action)
+    public T Select<T>(Func<string, T> map)
     {
-        Announcement2 += action;
+        WriteLine($"There you go. You selected it {typeof(T)}");
+        return map("Gone are the days");
     }
 }
