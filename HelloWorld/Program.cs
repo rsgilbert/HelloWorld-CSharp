@@ -6,21 +6,22 @@ public class Program
 {
 
 
+
     static void Main(string[] args)
     {
-        var unev = new UnEventful();
-        unev.Announcement += s => 
-        {
-            WriteLine($"Announcement made {s}");
-        };
-        unev.Announcement += s => 
-        {
-            WriteLine($"Incase you didnt here: {s}");
-        };
+        Comparison<string> lengthComparison = (s1, s2) =>
+            Math.Sign(s1.Length - s2.Length);
 
-        unev.add_Annoucement2(s => WriteLine($"I want you to know that {s}"));
-        unev.Announce("Someone is getting married tomorrow!");
-     
+        string str1 = "Josephine";
+        string str2 = "Kalypso";
+        string str3 = "Zan";
+        string str4 = "Nina Myers";
+        string[] names = { str1, str2, str3, str4 };
+        Array.Sort(names, lengthComparison);
+        foreach (string nm in names)
+        {
+            WriteLine(nm);
+        }
 
     }
 
@@ -30,7 +31,7 @@ public class Program
 }
 
 
-public class UnEventful 
+public class UnEventful
 {
     public event Action<string>? Announcement;
 
