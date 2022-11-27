@@ -9,21 +9,33 @@ public class Program
     static void Main(string[] args)
     {
 
-        double averageHours = Course.Catalog.Average(cs => cs.Duration.TotalHours);
-        double totalHours = Course.Catalog.Sum(cs => cs.Duration.TotalHours);
-        double minHours = Course.Catalog.Min(cs => cs.Duration.TotalHours);
-        DateTime maxDate= Course.Catalog.Max(cs => cs.PublicationDate);
-        var courseWithMaxPubDt = Course.Catalog.MaxBy(cs =>cs.PublicationDate);
-        WriteLine($"Average: {averageHours}, total {totalHours}, minHours {minHours}");
+        var categories = Course.Catalog.Select(c => c.Category).Distinct();
 
-        WriteLine($"maxdate {maxDate}, cs {courseWithMaxPubDt}");
+        foreach(string category in categories)
+        {
+            // WriteLine(category);
+        }
 
-        double tot1 = Course.Catalog.Aggregate(0D, (hours, course) => hours + course.Duration.TotalHours);
-        WriteLine(tot1);
-        WriteLine(new DateTime());
+        var arr1 = new string[] { "james", "peterson", "john", "james"};
+        var arr2 = new string[] { "mary", "sarah", "john", "peterson"};
 
+        var inters = arr1.Intersect(arr2);
+        // Print(inters);
+
+        var unio = arr1.Union(arr2);
+        // Print(unio);
+
+        var arr1Only = arr1.Except(arr2);
+        Print(arr1Only);
     }
 
+    static void Print<T>(IEnumerable<T> enumerable)
+    {
+        foreach(var item in enumerable)
+        {
+            WriteLine(item);
+        }
+    }
 
 
 
