@@ -9,12 +9,19 @@ public class Program
     static void Main(string[] args)
     {
 
-        var courses = from course in Course.Catalog where course.Number >= 102 select course;
-        Course FirstCourse = courses.LastOrDefault(c => c.Category == "MATT");
-        WriteLine(FirstCourse);
+        double averageHours = Course.Catalog.Average(cs => cs.Duration.TotalHours);
+        double totalHours = Course.Catalog.Sum(cs => cs.Duration.TotalHours);
+        double minHours = Course.Catalog.Min(cs => cs.Duration.TotalHours);
+        DateTime maxDate= Course.Catalog.Max(cs => cs.PublicationDate);
+        var courseWithMaxPubDt = Course.Catalog.MaxBy(cs =>cs.PublicationDate);
+        WriteLine($"Average: {averageHours}, total {totalHours}, minHours {minHours}");
 
-        var thirdCourse = Course.Catalog.ElementAt(2);
-        WriteLine(thirdCourse);
+        WriteLine($"maxdate {maxDate}, cs {courseWithMaxPubDt}");
+
+        double tot1 = Course.Catalog.Aggregate(0D, (hours, course) => hours + course.Duration.TotalHours);
+        WriteLine(tot1);
+        WriteLine(new DateTime());
+
     }
 
 
