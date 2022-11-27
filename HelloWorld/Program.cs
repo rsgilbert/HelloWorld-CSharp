@@ -9,25 +9,29 @@ public class Program
     static void Main(string[] args)
     {
 
-        var categories = Course.Catalog.Select(c => c.Category).Distinct();
+        var subjectGroups = from course in Course.Catalog
+                            group course.Title by course.Category;
 
-        foreach (string category in categories)
-        {
-            // WriteLine(category);
-        }
+        subjectGroups = Course.Catalog.GroupBy(c => c.Category, c => c.PublicationDate.ToString());
 
-        var arr1 = new string[] { "james", "peterson", "john", "james" };
-        var arr2 = new string[] { "mary", "sarah", "john", "peterson", "angella" };
+        // foreach(var group in subjectGroups)
+        // {
+        //     WriteLine($"Category: {group.Key}");
+        //     Print(group);
+        // }
 
-        // Print(arr1.Concat(arr2));
-        // Print(arr1.Append("Emmanuel"));
-        // Print(arr2.Prepend("Antony"));
+        string[] names = { "Jimmy", "James", "Paddy", "Maggie", "Pedro", "Rooney", "Suzan", "Ben" };
+        var groupedNames =
+            from name in names
+            group name by new { name.Length, firstChar= name[0] } into namesByLength
+            let namesByLengthCount = namesByLength.Count()
+            orderby namesByLengthCount
+            select (namesByLength.Key, namesByLengthCount);
 
-        var couples = arr1.Zip(arr2, (first, second) => string.Join(" is married to ", first, second));
-        Print(couples);
-        string[] arr3 = { "magret", "angella", "MONICA" };
-        string[] arr4 = { "magret", "angella", "monica" };
-        WriteLine(arr3.SequenceEqual(arr4, new IgnoreCaseComparer()));
+        Print(groupedNames);
+
+
+
     }
 
     static void Print<T>(IEnumerable<T> enumerable)
@@ -38,18 +42,7 @@ public class Program
         }
     }
 
-    private class IgnoreCaseComparer : EqualityComparer<string>
-    {
-        public override bool Equals(string? s1, string? s2)
-        {
-            return s1?.ToLower() == s2?.ToLower();
-        }
-  
-        public override int GetHashCode(string s1)
-        {
-            return s1.GetHashCode();
-        }
-    }
+
 
 
 
@@ -100,6 +93,15 @@ public class Course
             PublicationDate = new DateTime(2001, 3, 20),
             Duration = TimeSpan.FromHours(3),
         },
+
+        new Course
+        {
+               Title = "Data Structures and Algorithms",
+            Category = "CS",
+            Number = 104,
+            PublicationDate = new DateTime(2017,11, 15),
+            Duration = TimeSpan.FromHours(1),
+        },
         new Course
         {
             Title = "Graph Theory",
@@ -123,14 +125,6 @@ public class Course
             Number = 104,
             PublicationDate = new DateTime(2015, 5, 21),
             Duration = TimeSpan.FromHours(5),
-        },
-        new Course
-        {
-               Title = "Data Structures and Algorithms",
-            Category = "CS",
-            Number = 104,
-            PublicationDate = new DateTime(2017,11, 15),
-            Duration = TimeSpan.FromHours(1),
         }
     };
 }
