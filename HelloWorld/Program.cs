@@ -8,76 +8,51 @@ public class Program
 {
     static void Main(string[] args)
     {
-        var studentsAndCourses =
-            from choice in CourseChoice.ChoiceCatalog
-            join course in Course.Catalog
-            on choice.Number equals course.Number
-            orderby choice.Number
-            select new { course.Number, course.Title, choice.StudentId };
-        Print(studentsAndCourses);
-
-        var orders = new[]
-        {
-            new { OrderId=1, Description="Pilao"},
-            new { OrderId=2, Description="Chips"},
-            new { OrderId=3, Description="Macron"}
-        };
-        var orderLines = new[]
-        {
-            new { DocumentNo =1, Qty=2,Description="Rice"},
-            new { DocumentNo=2, Qty=1, Description="Chip slices"},
-            new {DocumentNo=2, Qty=2, Description="Tomato sauce"},
-            new {DocumentNo=3, Qty=1, Description="Macron"},
-            new {DocumentNo=3, Qty=1, Description="Cola"}
-        };
-
-        var allOrders = 
-            from order in orders 
-            join orderLine in orderLines 
-            on order.OrderId equals orderLine.DocumentNo 
-            select new { order.OrderId, order.Description, LineDescription=orderLine.Description, orderLine.Qty};
-        Print(allOrders);
-
+        IEnumerable<object> objectCourses = from c in Course.Catalog select (object) c;
+        objectCourses = objectCourses.Append(111);
+        IEnumerable<Course> courses = objectCourses.Cast<Course>();
+        objectCourses = objectCourses.Append(12);
+        Print(courses);
 
 
     }
 
     static void Print<T>(IEnumerable<T> enumerable)
+    {
+        foreach (var item in enumerable)
         {
-            foreach (var item in enumerable)
-            {
-                WriteLine(item);
-            }
+            WriteLine(item);
         }
-
-
-
-
-
     }
 
 
-    public class Course
+
+
+
+}
+
+
+public class Course
+{
+    public string Title { get; set; } = "";
+    public string Category { get; set; } = "";
+    public int Number { get; set; }
+    public DateTime PublicationDate { get; set; }
+    public TimeSpan Duration { get; set; }
+    public override string ToString()
     {
-        public string Title { get; set; } = "";
-        public string Category { get; set; } = "";
-        public int Number { get; set; }
-        public DateTime PublicationDate { get; set; }
-        public TimeSpan Duration { get; set; }
-        public override string ToString()
-        {
-            return $"Course(Title={Title}, Category={Category})";
-        }
+        return $"Course(Title={Title}, Category={Category})";
+    }
 
 
 
-        public static IEnumerable<Course> ShortEvenIdxCourses()
-        {
-            return Catalog
-                .Where((course, idx) => (idx % 2 == 0 && course.Duration.TotalHours < 3));
-        }
-        public static readonly Course[] Catalog =
-        {
+    public static IEnumerable<Course> ShortEvenIdxCourses()
+    {
+        return Catalog
+            .Where((course, idx) => (idx % 2 == 0 && course.Duration.TotalHours < 3));
+    }
+    public static readonly Course[] Catalog =
+    {
         new Course
         {
             Title = "Elements of Geometry",
@@ -115,15 +90,15 @@ public class Program
     };
 
 
-    }
+}
 
-    public class CourseChoice
+public class CourseChoice
+{
+    public int StudentId { get; set; }
+    public int Number { get; set; }
+
+    public static CourseChoice[] ChoiceCatalog =
     {
-        public int StudentId { get; set; }
-        public int Number { get; set; }
-
-        public static CourseChoice[] ChoiceCatalog =
-        {
         new CourseChoice{ StudentId = 1, Number = 101 },
         new CourseChoice { StudentId = 1, Number = 103 },
         new CourseChoice{ StudentId = 2, Number = 101 },
@@ -133,4 +108,4 @@ public class Program
         new CourseChoice{ StudentId = 4, Number = 104 },
         new CourseChoice { StudentId = 4, Number = 105},
     };
-    }
+}
