@@ -8,11 +8,21 @@ public class Program
 {
     static void Main(string[] args)
     {
-        IEnumerable<object> objectCourses = from c in Course.Catalog select (object) c;
-        objectCourses = objectCourses.Append(111);
-        IEnumerable<Course> courses = objectCourses.Cast<Course>();
-        objectCourses = objectCourses.Append(12);
-        Print(courses);
+        ILookup<string, Course> categories = Course.Catalog.ToLookup(cs => cs.Category);
+        IEnumerable<Course> csCourses = categories["MAT"];
+        // Print(csCourses);
+        // WriteLine(categories.Count());
+
+        IDictionary<string, Course> titles = Course.Catalog.ToDictionary(cs => cs.Title);
+        // Print(titles);
+
+        var categories2 = 
+            from course in Course.Catalog 
+            group course by course.Category ;
+        // Print(categories2.First(c => c.Key == "MAT"));
+
+
+
 
 
     }
@@ -73,7 +83,7 @@ public class Course
         new Course
         {
             Title = "Graph Theory",
-            Category = "MAT",
+            Category = "SE",
             Number = 102,
             PublicationDate = new DateTime(2015, 5, 21),
             Duration = TimeSpan.FromHours(1),
