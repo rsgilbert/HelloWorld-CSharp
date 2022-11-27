@@ -8,19 +8,14 @@ public class Program
 {
     static void Main(string[] args)
     {
-        ILookup<string, Course> categories = Course.Catalog.ToLookup(cs => cs.Category);
-        IEnumerable<Course> csCourses = categories["MAT"];
-        // Print(csCourses);
-        // WriteLine(categories.Count());
+        var tenTo15 = Enumerable.Range(10, 5);
+        Print(tenTo15);
 
-        IDictionary<string, Course> titles = Course.Catalog.ToDictionary(cs => cs.Title);
-        // Print(titles);
+        var fourSevens = Enumerable.Repeat(7, 4);
+        Print(fourSevens);
 
-        var categories2 = 
-            from course in Course.Catalog 
-            group course by course.Category ;
-        // Print(categories2.First(c => c.Key == "MAT"));
-
+        IEnumerable<int> emptyEn = Enumerable.Empty<int>();
+        WriteLine(emptyEn.Count());
 
 
 
