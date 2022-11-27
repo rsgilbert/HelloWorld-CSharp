@@ -8,44 +8,32 @@ public class Program
 {
     static void Main(string[] args)
     {
-        foreach(var course in Course.ShortEvenIdxCourses())
+        int[] numbers = {1,2,3,4,5};
+        string[] letters = {"A", "B", "C"};
+
+        IEnumerable<string> combined = from number in numbers 
+            from letter in letters 
+            select letter + number;
+        
+        IEnumerable<string> combined2 = numbers.SelectMany(
+                number => letters, (number, letter) => letter + number
+        );
+        
+        // foreach(string s in combined2) WriteLine(s);
+
+        // flattening an array 
+        int[][] arrays = 
         {
-            // WriteLine(course.Title);
-        }
-        // ShowAllStrings(srcObjects());
-
-        var courses = from course in Course.Catalog 
-            where course.Category == "CS"
-            select new { course.Category, course.Title };
-        foreach(var course in courses)
-        {
-            // WriteLine($"Category: {course.Category}, Title: {course.Title}");
-        }
-
-        // projection/mapping using select
-        int[] numbers = { 0, 1, 2, 3, 4};
-        int[] squared = (from number in numbers select number * number).ToArray();
-        foreach(int sq in squared) WriteLine(sq);
+            new[] { 1, 4}, 
+            new[] { 10, 20, 50, 60},
+            new[] { 100, 100, 100, 101 }
+        };
+        var flattened = from row in arrays 
+            from col in row 
+            select col;
+        WriteLine(string.Join(" , ", flattened));
     }
-    public static void ShowAllStrings(IEnumerable<object> src)
-    {
-        foreach(var s in src.OfType<Female>())
-        {
-            WriteLine(s);
-        }
-    }
-
-    public static IEnumerable<object> srcObjects()
-    {
-        yield return 5;
-        yield return "Jack";
-        yield return false;
-        yield return "Chemistry";
-        yield return new Person();
-        yield return new Female();
-        yield return new Person();
-    }
-
+ 
 
 
 
