@@ -8,30 +8,12 @@ public class Program
 {
     static void Main(string[] args)
     {
-        int[] numbers = {1,2,3,4,5};
-        string[] letters = {"A", "B", "C"};
+        var q = from course in Course.Catalog 
+            orderby course.PublicationDate, course.Title descending
+            select new { course.Title, course.PublicationDate };
+        foreach(var c in q) WriteLine($"{c.PublicationDate}, {c.Title}");
 
-        IEnumerable<string> combined = from number in numbers 
-            from letter in letters 
-            select letter + number;
-        
-        IEnumerable<string> combined2 = numbers.SelectMany(
-                number => letters, (number, letter) => letter + number
-        );
-        
-        // foreach(string s in combined2) WriteLine(s);
-
-        // flattening an array 
-        int[][] arrays = 
-        {
-            new[] { 1, 4}, 
-            new[] { 10, 20, 50, 60},
-            new[] { 100, 100, 100, 101 }
-        };
-        var flattened = from row in arrays 
-            from col in row 
-            select col;
-        WriteLine(string.Join(" , ", flattened));
+    
     }
  
 
@@ -93,7 +75,7 @@ public class Course
                Title = "Discrete Maths",
             Category = "MAT",
             Number = 103,
-            PublicationDate = new DateTime(2014, 5, 21),
+            PublicationDate = new DateTime(2015, 5, 21),
             Duration = TimeSpan.FromHours(2),
         },
         new Course
@@ -101,7 +83,7 @@ public class Course
             Title = "Theory of Computation",
             Category = "CS",
             Number = 104,
-            PublicationDate = new DateTime(2017, 3, 2),
+            PublicationDate = new DateTime(2015, 5, 21),
             Duration = TimeSpan.FromHours(5),
         },
         new Course
