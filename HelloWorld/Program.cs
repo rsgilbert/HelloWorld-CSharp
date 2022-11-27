@@ -8,22 +8,15 @@ public class Program
 {
     static void Main(string[] args)
     {
-        
-        var hasTitle = from course in Course.Catalog  
-            
-            select  course ;
 
-        bool hasCourse = Course.Catalog.Any(c => c.Title== "Discrete Maths");
-        WriteLine(hasCourse);
+        var courses = from course in Course.Catalog where course.Number >= 102 select course;
+        Course FirstCourse = courses.LastOrDefault(c => c.Category == "MATT");
+        WriteLine(FirstCourse);
 
-        bool allCoursesComply = Course.Catalog
-            .All(c => c.Number >= 101);
-        WriteLine($"All comply: {allCoursesComply}");
-
-        WriteLine($"Count: {Course.Catalog.Count(c => c.Number > 101 && c.Number < 104)}");
-        
+        var thirdCourse = Course.Catalog.ElementAt(2);
+        WriteLine(thirdCourse);
     }
- 
+
 
 
 
@@ -37,7 +30,7 @@ public class Person
     }
 }
 
-public class Female : Person 
+public class Female : Person
 {
     public override string ToString()
     {
@@ -52,8 +45,12 @@ public class Course
     public int Number { get; set; }
     public DateTime PublicationDate { get; set; }
     public TimeSpan Duration { get; set; }
+    public override string ToString()
+    {
+        return $"Course(Title={Title}, Category={Category})";
+    }
 
-    
+
 
     public static IEnumerable<Course> ShortEvenIdxCourses()
     {
