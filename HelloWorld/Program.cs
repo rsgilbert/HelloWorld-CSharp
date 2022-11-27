@@ -11,29 +11,43 @@ public class Program
 
         var categories = Course.Catalog.Select(c => c.Category).Distinct();
 
-        foreach(string category in categories)
+        foreach (string category in categories)
         {
             // WriteLine(category);
         }
 
-        var arr1 = new string[] { "james", "peterson", "john", "james"};
-        var arr2 = new string[] { "mary", "sarah", "john", "peterson"};
+        var arr1 = new string[] { "james", "peterson", "john", "james" };
+        var arr2 = new string[] { "mary", "sarah", "john", "peterson", "angella" };
 
-        var inters = arr1.Intersect(arr2);
-        // Print(inters);
+        // Print(arr1.Concat(arr2));
+        // Print(arr1.Append("Emmanuel"));
+        // Print(arr2.Prepend("Antony"));
 
-        var unio = arr1.Union(arr2);
-        // Print(unio);
-
-        var arr1Only = arr1.Except(arr2);
-        Print(arr1Only);
+        var couples = arr1.Zip(arr2, (first, second) => string.Join(" is married to ", first, second));
+        Print(couples);
+        string[] arr3 = { "magret", "angella", "MONICA" };
+        string[] arr4 = { "magret", "angella", "monica" };
+        WriteLine(arr3.SequenceEqual(arr4, new IgnoreCaseComparer()));
     }
 
     static void Print<T>(IEnumerable<T> enumerable)
     {
-        foreach(var item in enumerable)
+        foreach (var item in enumerable)
         {
             WriteLine(item);
+        }
+    }
+
+    private class IgnoreCaseComparer : EqualityComparer<string>
+    {
+        public override bool Equals(string? s1, string? s2)
+        {
+            return s1?.ToLower() == s2?.ToLower();
+        }
+  
+        public override int GetHashCode(string s1)
+        {
+            return s1.GetHashCode();
         }
     }
 
