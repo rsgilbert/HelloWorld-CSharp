@@ -8,12 +8,20 @@ public class Program
 {
     static void Main(string[] args)
     {
-        var q = from course in Course.Catalog 
-            orderby course.PublicationDate, course.Title descending
-            select new { course.Title, course.PublicationDate };
-        foreach(var c in q) WriteLine($"{c.PublicationDate}, {c.Title}");
+        
+        var hasTitle = from course in Course.Catalog  
+            
+            select  course ;
 
-    
+        bool hasCourse = Course.Catalog.Any(c => c.Title== "Discrete Maths");
+        WriteLine(hasCourse);
+
+        bool allCoursesComply = Course.Catalog
+            .All(c => c.Number >= 101);
+        WriteLine($"All comply: {allCoursesComply}");
+
+        WriteLine($"Count: {Course.Catalog.Count(c => c.Number > 101 && c.Number < 104)}");
+        
     }
  
 
