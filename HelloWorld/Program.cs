@@ -10,13 +10,61 @@ public class Program
     {
         foreach(var course in Course.ShortEvenIdxCourses())
         {
-            WriteLine(course.Title);
+            // WriteLine(course.Title);
         }
+        // ShowAllStrings(srcObjects());
+
+        var courses = from course in Course.Catalog 
+            where course.Category == "CS"
+            select new { course.Category, course.Title };
+        foreach(var course in courses)
+        {
+            // WriteLine($"Category: {course.Category}, Title: {course.Title}");
+        }
+
+        // projection/mapping using select
+        int[] numbers = { 0, 1, 2, 3, 4};
+        int[] squared = (from number in numbers select number * number).ToArray();
+        foreach(int sq in squared) WriteLine(sq);
+    }
+    public static void ShowAllStrings(IEnumerable<object> src)
+    {
+        foreach(var s in src.OfType<Female>())
+        {
+            WriteLine(s);
+        }
+    }
+
+    public static IEnumerable<object> srcObjects()
+    {
+        yield return 5;
+        yield return "Jack";
+        yield return false;
+        yield return "Chemistry";
+        yield return new Person();
+        yield return new Female();
+        yield return new Person();
     }
 
 
 
 
+}
+
+public class Person
+{
+    public override string ToString()
+    {
+        return "I am a person";
+    }
+}
+
+public class Female : Person 
+{
+    public override string ToString()
+    {
+        return "I am a female person";
+    }
 }
 
 public class Course
@@ -26,6 +74,8 @@ public class Course
     public int Number { get; set; }
     public DateTime PublicationDate { get; set; }
     public TimeSpan Duration { get; set; }
+
+    
 
     public static IEnumerable<Course> ShortEvenIdxCourses()
     {
