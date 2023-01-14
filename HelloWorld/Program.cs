@@ -1,116 +1,49 @@
-﻿using static System.Console;
-using static System.Math;
+﻿
+
 using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Linq;
-public class Program
+using System.Reflection;
+
+namespace System 
+{
+    public class String 
+    {}
+}
+
+class Program 
 {
     static void Main(string[] args)
     {
-        var tenTo15 = Enumerable.Range(10, 5);
-        Print(tenTo15);
+        var s1 = "jonathan";
+        var s2 = "john";
+        var s3 = "JOHN";
+        var s4 = "JONATHAN";
+        List<string> names = new string[] {s4, s1, s2, s3, }.ToList();
+        names.Sort(GetComparer(true));
+        foreach(string n in names)
+        {
+            Console.WriteLine(n);
+        }
 
-        var fourSevens = Enumerable.Repeat(7, 4);
-        Print(fourSevens);
-
-        IEnumerable<int> emptyEn = Enumerable.Empty<int>();
-        WriteLine(emptyEn.Count());
-
-
-
-
+        // var a = Assembly.Load("System");
+        var a = typeof(System.String);
+        Console.WriteLine($"{a.FullName},, {a.Assembly.ToString()}");
     }
 
-    static void Print<T>(IEnumerable<T> enumerable)
+    public static IComparer<string> GetComparer(bool ignoreCase) 
     {
-        foreach (var item in enumerable)
+        if(ignoreCase)
         {
-            WriteLine(item);
+            return StringComparer.CurrentCultureIgnoreCase;
+        }
+        else 
+        {
+            return StringComparer.CurrentCulture;
         }
     }
 
-
-
-
-
-}
-
-
-public class Course
-{
-    public string Title { get; set; } = "";
-    public string Category { get; set; } = "";
-    public int Number { get; set; }
-    public DateTime PublicationDate { get; set; }
-    public TimeSpan Duration { get; set; }
-    public override string ToString()
+    public static void ShowStaticTypeNameAndAssembly<T>(T item)
     {
-        return $"Course(Title={Title}, Category={Category})";
+        Type t = typeof(T);
+        Console.WriteLine($"Type: {t.FullName}, Assembly: {t.Assembly.FullName}");
     }
-
-
-
-    public static IEnumerable<Course> ShortEvenIdxCourses()
-    {
-        return Catalog
-            .Where((course, idx) => (idx % 2 == 0 && course.Duration.TotalHours < 3));
-    }
-    public static readonly Course[] Catalog =
-    {
-        new Course
-        {
-            Title = "Elements of Geometry",
-            Category = "MAT",
-            Number = 101,
-            PublicationDate = new DateTime(2001, 3, 20),
-            Duration = TimeSpan.FromHours(3),
-        },
-
-        new Course
-        {
-            Title = "Data Structures and Algorithms",
-            Category = "CS",
-            Number = 104,
-            PublicationDate = new DateTime(2017,11, 15),
-            Duration = TimeSpan.FromHours(1),
-        },
-        new Course
-        {
-            Title = "Graph Theory",
-            Category = "SE",
-            Number = 102,
-            PublicationDate = new DateTime(2015, 5, 21),
-            Duration = TimeSpan.FromHours(1),
-        },
-        new Course
-        {
-               Title = "Discrete Maths",
-            Category = "MAT",
-            Number = 103,
-            PublicationDate = new DateTime(2015, 5, 21),
-            Duration = TimeSpan.FromHours(2),
-        },
-
-    };
-
-
-}
-
-public class CourseChoice
-{
-    public int StudentId { get; set; }
-    public int Number { get; set; }
-
-    public static CourseChoice[] ChoiceCatalog =
-    {
-        new CourseChoice{ StudentId = 1, Number = 101 },
-        new CourseChoice { StudentId = 1, Number = 103 },
-        new CourseChoice{ StudentId = 2, Number = 101 },
-        new CourseChoice { StudentId = 2, Number = 105},
-        new CourseChoice{ StudentId = 3, Number = 101 },
-        new CourseChoice { StudentId = 4, Number = 103 },
-        new CourseChoice{ StudentId = 4, Number = 104 },
-        new CourseChoice { StudentId = 4, Number = 105},
-    };
 }
